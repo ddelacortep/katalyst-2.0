@@ -1,5 +1,7 @@
-@extends('plantillas.fixedbar')
+@extends('plantillas.targetas')
 
 @section('content')
-    <h1>Proyecto Page</h1>
+    <x-targetas color="bg-red-500" width="w-80" height="h-40" rounded="rounded-xl">
+        Contenido dentro de la tarjeta
+    </x-targetas>
 @endsection
