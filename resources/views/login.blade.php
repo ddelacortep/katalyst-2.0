@@ -50,7 +50,6 @@
                             border_color="#8b5cf6"
                             size="lg"
                             height="normal"
-                            gradient="true"
                         />
                     </div>
                 </form>
