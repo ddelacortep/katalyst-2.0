@@ -1,6 +1,11 @@
 @php
-    $iconosArriba = ['home.svg', 'calendario.svg', 'time_tracker.svg', 'star.svg'];
-    $iconoAbajo = 'user_mas.svg';
+    $iconosArriba = [
+        ['icono' => 'home.svg', 'ruta' => 'prueba'],
+        ['icono' => 'calendario.svg', 'ruta' => 'prueba'],
+        ['icono' => 'time_tracker.svg', 'ruta' => 'prueba'],
+        ['icono' => 'star.svg', 'ruta' => 'prueba'],
+    ];
+    $iconoAbajo = ['icono' => 'user_mas.svg', 'ruta' => 'prueba'];
 @endphp
 
 @props([
@@ -16,18 +21,18 @@
 <div
     class="flex flex-col items-center fixed left-0 bottom-0 justify-between {{ $width }} {{ $topSpace }} {{ $bg }} {{ $margin }} {{ $rounded }} {{ $padding }}">
     <div class="flex flex-col items-center pt-8" style="gap: 40px;">
-        @foreach ($iconosArriba as $img)
-            <button class="hover:opacity-80 transition-opacity">
-                <img src="{{ asset('images/fixedbar_icons/' . $img) }}" alt="{{ $img }}"
+        @foreach ($iconosArriba as $item)
+            <a href="{{ route($item['ruta']) }}" class="hover:opacity-80 transition-opacity">
+                <img src="{{ asset('images/fixedbar_icons/' . $item['icono']) }}" alt="{{ $item['icono'] }}"
                     class="{{ $iconSize }}">
-            </button>
+            </a>
         @endforeach
     </div>
 
     <div class="pb-8">
-        <button class="hover:opacity-80 transition-opacity">
-            <img src="{{ asset('images/fixedbar_icons/' . $iconoAbajo) }}" alt="{{ $iconoAbajo }}"
+        <a href="{{ route($iconoAbajo['ruta']) }}" class="hover:opacity-80 transition-opacity">
+            <img src="{{ asset('images/fixedbar_icons/' . $iconoAbajo['icono']) }}" alt="{{ $iconoAbajo['icono'] }}"
                 class="{{ $iconSize }}">
-        </button>
+        </a>
     </div>
 </div>
