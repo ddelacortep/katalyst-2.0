@@ -14,6 +14,6 @@ Route::get('/register', function () {
     return view('register');
 })->name('register');
 
-Route::get('/proyectos', function () {
-    return view('proyectos');
-})->name('proyectos');
+Route::get('/proyecto', function () {
+    return view('proyecto');
+})->name('proyecto');
