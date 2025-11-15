@@ -8,10 +8,13 @@
     'bg' => 'bg-[#191919]',
     'iconSize' => 'w-35 h-35',
     'topSpace' => 'top-[150px]',
+    'margin' => 'm-5',
+    'rounded' => 'r-10',
+    'padding' => 'p-5',
 ])
 
 <div
-    class="flex flex-col items-center fixed left-0 bottom-0 justify-between {{ $width }} {{ $topSpace }} {{ $bg }}">
+    class="flex flex-col items-center fixed left-0 bottom-0 justify-between {{ $width }} {{ $topSpace }} {{ $bg }} {{ $margin }} {{ $rounded }} {{ $padding }}">
     <div class="flex flex-col items-center pt-8" style="gap: 40px;">
         @foreach ($iconosArriba as $img)
             <button class="hover:opacity-80 transition-opacity">
