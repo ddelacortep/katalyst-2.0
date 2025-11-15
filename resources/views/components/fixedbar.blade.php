@@ -1,13 +1,13 @@
 @php
     $iconosArriba = [
         // Aqui o guardas las rutas o el PHP no se entera de nada que hay y ESTA ASI PARA QUE ESTÉN ORDENADOS DESPUES EN LA NAVBAR FIJA
-        ['icono' => 'home.svg', 'ruta' => 'prueba'],
-        ['icono' => 'calendario.svg', 'ruta' => 'prueba'],
-        ['icono' => 'time_tracker.svg', 'ruta' => 'prueba'],
-        ['icono' => 'star.svg', 'ruta' => 'prueba'],
+        ['icono' => 'home.svg', 'ruta' => 'prueba'], // HAY QUE CAMBIAR ESTO PARA QUE VAYA A LA PESTAÑA QUE TOCA
+        ['icono' => 'calendario.svg', 'ruta' => 'prueba'], // HAY QUE CAMBIAR ESTO PARA QUE VAYA A LA PESTAÑA QUE TOCA
+        ['icono' => 'time_tracker.svg', 'ruta' => 'prueba'], // HAY QUE CAMBIAR ESTO PARA QUE VAYA A LA PESTAÑA QUE TOCA
+        ['icono' => 'star.svg', 'ruta' => 'prueba'], // HAY QUE CAMBIAR ESTO PARA QUE VAYA A LA PESTAÑA QUE TOCA
     ];
     // Y este es el amargado que está abajo solo
-    $iconoAbajo = ['icono' => 'user_mas.svg', 'ruta' => 'prueba'];
+    $iconoAbajo = ['icono' => 'user_mas.svg', 'ruta' => 'prueba']; // HAY QUE CAMBIAR ESTO PARA QUE VAYA A LA PESTAÑA QUE TOCA
 @endphp
 
 
