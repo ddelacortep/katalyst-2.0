@@ -13,14 +13,15 @@
     'bg' => 'bg-[#191919]',
     'iconSize' => 'w-35 h-35',
     'topSpace' => 'top-[150px]',
-    'margin' => 'm-1.5',
-    'rounded' => 'r-10',
+    'marginLeft' => 'ml-[6px]',
+    'marginY' => 'my-[6px]',
+    'rounded' => 'rounded-[10px]',
     'padding' => 'p-5',
 ])
 
 <div
-    class="flex flex-col items-center fixed left-0 bottom-0 justify-between {{ $width }} {{ $topSpace }} {{ $bg }} {{ $margin }} {{ $rounded }} {{ $padding }}">
-    <div class="flex flex-col items-center pt-8" style="gap: 40px;">
+    class="flex flex-col items-center fixed left-0 bottom-0 justify-between {{ $width }} {{ $topSpace }} {{ $bg }} {{ $marginLeft }} {{ $marginY }} {{ $rounded }} {{ $padding }}">
+    <div class="flex flex-col items-center pt-8" style="gap: 40px;" {{ $rounded }}>
         @foreach ($iconosArriba as $item)
             <a href="{{ route($item['ruta']) }}"
                 class="hover:opacity-80 hover:scale-110 transition-all duration-200 ease-in-out">
