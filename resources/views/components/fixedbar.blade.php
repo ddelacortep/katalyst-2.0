@@ -13,7 +13,7 @@
     'bg' => 'bg-[#191919]',
     'iconSize' => 'w-35 h-35',
     'topSpace' => 'top-[150px]',
-    'margin' => 'm-5',
+    'margin' => 'm-1.5',
     'rounded' => 'r-10',
     'padding' => 'p-5',
 ])
