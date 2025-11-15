@@ -1,7 +1,7 @@
-@extends('plantillas.targetas')
+@extends('layouts.app')
 
 @section('content')
-    <x-targetas color="bg-red-500" width="w-80" height="h-40" rounded="rounded-xl">
+    <x-fixedbar color="bg-red-500" width="w-80" height="h-40" rounded="rounded-xl">
         Contenido dentro de la tarjeta
-    </x-targetas>
+    </x-fixedbar>
 @endsection
