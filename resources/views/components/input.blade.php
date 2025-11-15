@@ -1,3 +1,15 @@
-@props(['color' => '#191919', 'placeholder' => '', 'size' => 'md', 'type' => 'text', 'name' => '', 'value' => '', 'height' => 'normal', 'border_color' => '#3a3a3a', 'border_radius' => 'lg'])
+@props([
+    'color' => '#191919',
+    'placeholder' => '',
+    'size' => 'md',
+    'type' => 'text',
+    'name' => '',
+    'value' => '',
+    'height' => 'normal',
+    'border_color' => '#3a3a3a',
+    'border_radius' => 'lg',
+])
 
-<input type="{{ $type }}" name="{{ $name }}" value="{{ $value }}" placeholder="{{ $placeholder }}" class="bg-[{{ $color }}] border border-[{{ $border_color }}] text-white font-medium rounded-{{ $border_radius }} px-{{ $size == 'sm' ? '3' : ($size == 'lg' ? '6' : '5') }} py-{{ $height == 'small' ? '2' : ($height == 'large' ? '6' : ($height == 'xlarge' ? '8' : '3')) }} text-{{ $size }} transition-all duration-200 outline-none placeholder-gray-400"
+<input type="{{ $type }}" name="{{ $name }}" value="{{ $value }}"
+    placeholder="{{ $placeholder }}"
+    class="bg-[{{ $color }}] border border-[{{ $border_color }}] text-white font-medium rounded-{{ $border_radius }} px-{{ $size == 'xlg' ? '20' : ($size == 'sm' ? '3' : ($size == 'lg' ? '6' : '5')) }} py-{{ $height == 'small' ? '2' : ($height == 'large' ? '6' : ($height == 'xlarge' ? '8' : '3')) }} {{ $size == '20' ? 'text-2xl' : 'text-' . $size }} transition-all duration-200 outline-none placeholder-gray-400"
