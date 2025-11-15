@@ -17,3 +17,11 @@ Route::get('/register', function () {
 Route::get('/proyecto', function () {
     return view('proyecto');
 })->name('proyecto');
+
+Route::get('/proyectos', function () {
+    return view('proyectos');
+})->name('proyectos');
+
+Route::get('/prueba', function () {
+    return view('prueba');
+})->name('prueba');
