@@ -16,7 +16,7 @@
     </script>
 </head>
 
-<body class="bg-gray-100">
+<body class="bg-[#111111] min-h-screen">
     @yield('content')
 </body>
 
