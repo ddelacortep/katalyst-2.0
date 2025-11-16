@@ -30,8 +30,28 @@
 
                         </div>
                     </div>
-                    <div>
-                        @
+                    <div class="mt-6 space-y-3 overflow-y-auto max-h-[calc(100vh-200px)] 
+                    [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+                        @if(isset($proyectos) && $proyectos->count() > 0)
+                            @foreach($proyectos as $proyecto)
+                                <x-proyectos 
+                                    height="h-[50px]" 
+                                    width="w-[95%]"
+                                    onclick="seleccionarProyecto({{ $proyecto->id }})">
+                                    
+                                    <div class="text-center">
+                                        <h2 class="text-white font-semibold text-base md:text-lg lg:text-xl truncate px-2 max-w-full overflow-hidden">
+                                            {{ $proyecto->nombre_proyecto }}
+                                        </h2>
+                                    </div>
+                                </x-proyectos>
+                            @endforeach
+                        @else
+                            <div class="text-gray-500 text-center py-8">
+                                <p>No hay proyectos aún</p>
+                                <p class="text-sm mt-2">Crea tu primer proyecto</p>
+                            </div>
+                        @endif
                     </div>
                 </x-gestionproyecto>
             </div>
