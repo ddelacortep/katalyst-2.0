@@ -13,4 +13,14 @@ class Usuario extends Model
     public $timestamps = false;
 
     public $incrementing = false;
+
+    public function participa()
+    {
+        return $this->hasMany(Participa::class, 'id_usuario');
+    }
+
+    public function tarea()
+    {
+        return $this->hasMany(Tarea::class, 'id_usuario');
+    }
 }

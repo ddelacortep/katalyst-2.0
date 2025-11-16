@@ -13,4 +13,10 @@ class Estado extends Model
     public $timestamps = false;
 
     public $incrementing = false;
+
+    public function proyectos()
+    {
+        return $this->belongsToMany(Tarea::class, 'id_estado');
+    }
+    
 }

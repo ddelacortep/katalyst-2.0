@@ -13,4 +13,9 @@ class Rol extends Model
     public $timestamps = false;
 
     public $incrementing = false;
+
+    public function participa()
+    {
+        return $this->belongsTo(Participa::class, 'id_rol');
+    }
 }
