@@ -13,4 +13,9 @@ class Prioridad extends Model
     public $timestamps = false;
 
     public $incrementing = false;
+
+    public function tareas()
+    {
+        return $this->belongsToMany(Tarea::class, 'id_prioridad');
+    }
 }

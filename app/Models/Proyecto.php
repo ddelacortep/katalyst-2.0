@@ -13,4 +13,14 @@ class Proyecto extends Model
     public $timestamps = false;
 
     public $incrementing = false;
+
+    public function tarea()
+    {
+        return $this->hasMany(Tarea::class, 'id');
+    }
+
+    public function particip()
+    {
+        return $this->belongsTo(Participa::class, 'id_proyecto');
+    }
 }

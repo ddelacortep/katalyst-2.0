@@ -13,4 +13,19 @@ class Participa extends Model
     public $timestamps = false;
 
     public $incrementing = false;
+
+    public function rol()
+    {
+        return $this->hasOne(Rol::class, 'id');
+    }
+
+    public function usuario()
+    {
+        return $this->belongsTo(Usuario::class, 'id');
+    }
+
+    public function proyecto()
+    {
+        return $this->hasMany(Proyecto::class, 'id');
+    }
 }
