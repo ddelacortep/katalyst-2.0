@@ -35,14 +35,13 @@ class ProyectoController extends Controller
             'nombre_proyecto' => 'required|string|max:255',
         ]);
 
-        $proyecto = new Proyecto();
+        $proyecto = new Proyecto;
         $proyecto->nombre_proyecto = $request->nombre_proyecto;
         $proyecto->favorito = false; // Asignar un valor predeterminado si es necesario
         $proyecto->save();
 
         return redirect()->route('proyecto')->with('success', 'Proyecto creado exitosamente.');
 
-        
     }
 
     /**
