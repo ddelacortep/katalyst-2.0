@@ -16,10 +16,8 @@
             </div>
 
             {{-- ⚠️⚠️ Esto tiene que ser cambiado por un componente real de gestion de proyectos (DaniDLC) ⚠️⚠️ --}}
-            <div class="bg-transparent mb-[6px] ml-[6px] overflow-y-auto">
-                <div class="h-full border border-dashed border-gray-500 rounded-lg p-4">
-                    <p class="text-gray-500">Gestión de Proyectos</p>
-                </div>
+            <div class="bg-transparent mb-[6px] ml-[6px] border-[#3A3A3A] ">
+                <x-gestionproyecto />
             </div>
 
             {{-- ⚠️⚠️ Aqui tienen que ir todos los proyectos creados ⚠️⚠️ --}}
