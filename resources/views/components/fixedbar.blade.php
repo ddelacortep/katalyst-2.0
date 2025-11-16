@@ -17,7 +17,7 @@
     'bg' => 'bg-[#191919]',
     'iconSize' => 'w-35 h-35',
     'marginLeft' => 'ml-[6px]',
-    'marginBottom' => 'mb-[6px]',
+    'marginBottom' => 'mb-[4px]',
     'marginRight' => 'mr-[6px]',
     'rounded' => 'rounded-[10px]',
     'padding' => 'p-5',

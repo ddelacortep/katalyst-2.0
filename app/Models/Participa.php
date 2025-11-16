@@ -28,4 +28,11 @@ class Participa extends Model
     {
         return $this->hasMany(Proyecto::class, 'id');
     }
+
+    protected $fillable = [
+        'id',
+        'id_usuario',
+        'id_rol',
+        'id_proyecto'
+    ];
 }

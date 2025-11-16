@@ -12,15 +12,22 @@ class Proyecto extends Model
     // private $primaryKey = 'id';
     public $timestamps = false;
 
-    public $incrementing = false;
+    public $incrementing = 'true';
 
     public function tarea()
     {
         return $this->hasMany(Tarea::class, 'id');
     }
 
-    public function particip()
+    public function participa()
     {
         return $this->belongsTo(Participa::class, 'id_proyecto');
     }
+
+    protected $fillable = [
+        'id',
+        'nombre_proyecto',
+        'favorito',
+        'id_tarea',
+    ];
 }
