@@ -1,6 +1,7 @@
 @props([
     'id' => 'targetaModal',
-    'size' => '500px',
+    'width' => 'w-[500px]',
+    'height' => 'h-[500px]',
     'bg' => 'bg-[#191919]',
     'borderColor' => 'border-t-[#fff]',
     'rounded' => 'rounded-[10px]',
@@ -14,7 +15,7 @@
     class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden items-center justify-center">
     
     <div onclick="event.stopPropagation()"
-        class="relative w-[{{ $size }}] h-[{{ $size }}] {{ $bg }} {{ $rounded }} {{ $padding }} border-2 {{ $borderColor }} {{ $aspectRatio }}">
+        class="relative {{ $bg }} {{ $rounded }} {{ $padding }} border-2 {{ $borderColor }} {{ $aspectRatio }} {{ $height }} {{ $width }}">
         
         {{-- Botón de cerrar --}}
         @if ($showClose === 'true')
