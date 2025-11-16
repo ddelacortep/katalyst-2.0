@@ -21,6 +21,9 @@ class TareaController extends Controller
     public function create()
     {
         //
+        $tarea = new Tarea;
+        $tarea->nombre_tarea = request('nombre_tarea');
+        $tarea->descripcion = request('descripcion');
     }
 
     /**

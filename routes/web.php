@@ -1,7 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProyectoController;
+use App\Http\Controllers\TareaController;
+use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('login');
@@ -27,3 +28,6 @@ Route::get('/prueba', function () {
 
 Route::post('/proyecto/guardar', [ProyectoController::class, 'store'])
     ->name('proyecto.store');
+
+Route::post('/tareas/crear', [TareaController::class, 'create'])
+    ->name('tareas.create');
