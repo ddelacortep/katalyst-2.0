@@ -12,8 +12,8 @@
 
     {{-- Input para que sea lo mas ancho posible (Columnas 3 a 10) --}}
     <div class="col-span-8 flex items-center justify-center w-full">
-        <x-input name="search" type="text" placeholder="{{ $fondoinput }}" size="xlg" height="medium"
-            class="w-full" />
+        <x-input name="search" type="text" placeholder="{{ $fondoinput }}" heigth="h-[50px]" width="w-full"
+            padding="p-[10px]" borderRadius="rounded-[10px]" />
     </div>
 </div>
 
