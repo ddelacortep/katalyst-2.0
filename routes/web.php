@@ -31,3 +31,6 @@ Route::post('/proyecto/guardar', [ProyectoController::class, 'store'])
 
 Route::post('/tareas/crear', [TareaController::class, 'create'])
     ->name('tareas.create');
+
+Route::get('/proyecto', [ProyectoController::class, 'index'])
+    ->name('proyecto'); 
