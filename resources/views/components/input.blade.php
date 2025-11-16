@@ -1,15 +1,16 @@
 @props([
-    'color' => '#191919',
     'placeholder' => '',
-    'size' => 'md',
     'type' => 'text',
     'name' => '',
     'value' => '',
-    'height' => 'normal',
     'border_color' => '#3a3a3a',
-    'border_radius' => 'lg',
+    'width' => 'w-[200px]',
+    'heigth' => 'h-[30px]',
+    'padding' => 'p-[5px]',
+    'borderRadius' => 'rounded-[10px]',
+    'backgroundColor' => 'bg-[#191919]',
 ])
 
 <input type="{{ $type }}" name="{{ $name }}" value="{{ $value }}"
     placeholder="{{ $placeholder }}"
-    class="bg-[{{ $color }}] border border-[{{ $border_color }}] text-white font-medium rounded-{{ $border_radius }} px-{{ $size == 'xlg' ? '20' : ($size == 'sm' ? '3' : ($size == 'lg' ? '6' : '5')) }} py-{{ $height == 'small' ? '2' : ($height == 'large' ? '6' : ($height == 'xlarge' ? '8' : '3')) }} {{ $size == '20' ? 'text-2xl' : 'text-' . $size }} transition-all duration-200 outline-none placeholder-gray-400"
+    class="border border-[{{ $border_color }}] text-white font-medium  {{ $heigth }} {{ $width }} {{ $padding }} {{ $borderRadius }} {{ $backgroundColor }} transition-all duration-200 outline-none placeholder-gray-400"
