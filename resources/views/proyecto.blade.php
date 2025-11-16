@@ -37,12 +37,8 @@
                     </div>
                 </x-proyectocontenido>
                 <div>
-                    <x-targeta id="targetaModal" onclick="closeModal('targetaModal')" title="Crear Proyecto" text="hola" height="h-[150px]" width="w-[500px]" padding="p-6">
-                        <h2 class='text-white'>Información del proyecto</h2>
-                        <br>
-                        <form>
-                            <input type="text" name="nombre" class="w-full p-3 rounded-lg bg-[#2C2C2C] text-white border border-[#3A3A3A]" placeholder="Nombre del proyecto">
-                        </form>
+                    <x-targeta id="targetaModal" onclick="closeModel('targetaModal')" title="Crear Proyecto" text="hola">
+
                     </x-targeta>    
 
                 </div>
