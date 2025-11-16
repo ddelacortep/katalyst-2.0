@@ -50,12 +50,17 @@
                     </div>
                 </x-proyectocontenido>
                 <div>
-                    <x-targeta id="targetaModal" onclick="closeModal('targetaModal')" title="Crear Proyecto" text="hola" height="h-[150px]" width="w-[500px]" padding="p-6">
+                    <x-targeta id="targetaModal" onclick="closeModal('targetaModal')" title="Crear Proyecto" text="hola" height="h-[200px]" width="w-[750px]" padding="p-6">
                         <h2 class='text-white'>Información del proyecto</h2>
                         <br>
                         <form>
                             <input type="text" name="nombre" class="w-full p-3 rounded-lg bg-[#2C2C2C] text-white border border-[#3A3A3A]" placeholder="Nombre del proyecto">
                         </form>
+                        <div class="flex justify-end mt-4">
+                        <x-botones text="Guardar" type="button" color="#191919" text_color="#fff" size="sm"
+                            height="small" href="{{ route('prueba') }}" border_color="#3A3A3A" class="mt-4">
+                        </x-botones>
+                        </div>
                     </x-targeta>
                 </div>
             </div>
