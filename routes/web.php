@@ -16,10 +16,6 @@ Route::get('/register', function () {
     return view('register');
 })->name('register');
 
-Route::get('/proyecto', function () {
-    return view('proyecto');
-})->name('proyecto');
-
 Route::get('/prueba', function () {
     return view('prueba');
 })->name('prueba');
