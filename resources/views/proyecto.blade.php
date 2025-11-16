@@ -21,7 +21,7 @@
                     <div class="grid grid-cols-2 gap-4 flex items-center">
                         <h2 class="text-2xl font-semibold text-[#fff] flex items-center justify-center">Inicio</h2>
                         <div class="flex justify-center">
-                            <x-botones onclick="openModel('targetaModal')"
+                            <x-botones  onclick="openModal('targetaModal')"
                                 text="Crear" 
                                 type="button" 
                                 color="#191919" 
@@ -50,7 +50,9 @@
                     </div>
                 </x-proyectocontenido>
                 <div>
-                    <x-targeta id="targetaModal" onclick="closeModel('targetaModal')" title="Crear Proyecto" />
+                    <x-targeta id="targetaModal" onclick="closeModel('targetaModal')" title="Crear Proyecto" text="hola">
+
+                    </x-targeta>    
 
                 </div>
             </div>
