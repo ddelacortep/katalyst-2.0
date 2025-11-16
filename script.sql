@@ -1,3 +1,7 @@
+CREATE DATABASE Katalyst;
+GO
+USE Katalyst;
+
 CREATE TABLE "Usuario"(
     "id" BIGINT NOT NULL,
     "nombre_usuario" VARCHAR(255) NOT NULL,
