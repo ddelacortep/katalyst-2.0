@@ -12,5 +12,5 @@ class Tarea extends Model
     // private $primaryKey = 'id';
     public $timestamps = false;
 
-    public $incrementing = false;
+    public $incrementing = true;
 }

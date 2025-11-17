@@ -33,7 +33,6 @@ class TareaController extends Controller
         $tarea = new Tarea;
         $tarea->nombre_tarea = request('nombre_tarea');
         $tarea->desc_tarea = request('desc_tarea');
-        $tarea->id=1;
         $tarea->id_proyecto = 1;
         $tarea->fecha_creacion = now();
         $tarea->save();
