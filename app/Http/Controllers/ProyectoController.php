@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Tarea;
 use App\Models\Estado;
-use App\Models\Proyecto;
 use App\Models\Prioridad;
+use App\Models\Proyecto;
+use App\Models\Tarea;
 use Illuminate\Http\Request;
 
 class ProyectoController extends Controller
@@ -19,8 +19,9 @@ class ProyectoController extends Controller
         $proyectos = Proyecto::all();
         $estados = Estado::all(); // ← Añadir esto
         $prioridad = Prioridad::all(); // ← Añadir esto
+
         return view('proyecto', compact('proyectos', 'estados', 'prioridad'));
-        
+
     }
 
     /**
@@ -58,17 +59,12 @@ class ProyectoController extends Controller
         //
         $proyectos = Proyecto::all();  // Para el sidebar
         $proyectoSeleccionado = Proyecto::findOrFail($id);
-        $tareas = Tarea::where('id_proyecto', $proyectoSeleccionado->id)->get();  // Solo tareas del proyecto
+        $tareas = Tarea::where('id_proyecto', $proyectoSeleccionado->id)->get();
         $estados = Estado::all();
         $prioridad = Prioridad::all();
-        
-        return view('proyecto', compact(
-            'proyectos', 
-            'proyectoSeleccionado', 
-            'tareas', 
-            'estados', 
-            'prioridad'
-        ));
+
+        return view('proyecto', compact('proyectos', 'proyectoSeleccionado', 'tareas', 'estados', 'prioridad'));
+
     }
 
     /**
