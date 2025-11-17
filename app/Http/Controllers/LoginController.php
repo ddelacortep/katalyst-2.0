@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Usuario;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Testing\Fluent\Concerns\Has;
 
 class LoginController extends Controller
 {
@@ -20,7 +20,8 @@ class LoginController extends Controller
         $usuario = Usuario::where('nombre_usuario', $request->input('nombre_usuario'))->first();
 
         if ($usuario && Hash::check($request->input('contraseña'), $usuario->contrasena)) { 
-            $response = redirect('/');
+            Auth::login($usuario);
+            $response = redirect('/proyecto');            
         } else {
             session()->flash('error', 'Credenciales inválidas');
             $response = redirect()->back()->withInput();
