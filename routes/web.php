@@ -1,8 +1,10 @@
 <?php
 
-use App\Http\Controllers\ProyectoController;
-use App\Http\Controllers\TareaController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\LoginController;
+use App\Http\Controllers\TareaController;
+use App\Http\Controllers\ProyectoController;
+use App\Http\Controllers\RegisterController;
 
 Route::get('/', function () {
     return view('login');
@@ -19,6 +21,18 @@ Route::get('/register', function () {
 Route::get('/prueba', function () {
     return view('prueba');
 })->name('prueba');
+
+Route::get('/login', [LoginController::class, 'showLoginForm'])
+    ->name('login'); 
+
+Route::post('/login', [LoginController::class, 'login'])
+    ->name('login.submit');
+
+Route::get('/register', [RegisterController::class, 'showRegisterForm'])
+    ->name('register');
+
+Route::post('/register', [RegisterController::class, 'register'])
+    ->name('register.submit');
 
 // ---------------------
 
