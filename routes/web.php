@@ -7,6 +7,11 @@ use App\Http\Controllers\EstadoController;
 use App\Http\Controllers\ProyectoController;
 use App\Http\Controllers\RegisterController;
 
+Route::middleware(['auth'])->group(function () {
+    Route::get('/proyecto', [ProyectoController::class, 'index'])
+    ->name('proyecto');
+});
+
 Route::get('/', function () {
     return view('login');
 });
