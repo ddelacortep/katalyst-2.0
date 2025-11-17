@@ -27,7 +27,6 @@ class RegisterController extends Controller
         $usuario->contrasena = \Illuminate\Support\Facades\Hash::make($request->input('contraseña'));
         $usuario->save();
 
-        
         return redirect()->route('login')->with('success', 'Registro exitoso. Ahora puedes iniciar sesión.');
     }
 }
