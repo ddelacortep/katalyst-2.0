@@ -33,7 +33,7 @@
                             @if (isset($proyectos) && $proyectos->count() > 0)
                                 @foreach ($proyectos as $proyecto)
                                     <x-proyectos height="h-[60px]" width="w-[170px]" padding="p-3"
-                                        class="@if(isset($proyectoSeleccionado) && $proyectoSeleccionado->id == $proyecto->id) border-blue-500 border-4 @endif"
+                                        class="@if (isset($proyectoSeleccionado) && $proyectoSeleccionado->id == $proyecto->id) border-blue-500 border-4 @endif"
                                         onclick="window.location.href='{{ route('proyecto.show', $proyecto->id) }}'">
 
                                         <div class="w-full flex items-center justify-center px-2">
@@ -81,24 +81,19 @@
                         </x-botones>
                     </div>
                     <div class="flex justify-end items-start">
-                        <x-botones onclick="@if(isset($proyectoSeleccionado)) openModal('tareaModal') @else alert('Selecciona un proyecto primero') @endif" 
-                            text="+ Tarea" type="button" color="#191919"
-                            text_color="#fff" size="sm" height="small" border_color="#3A3A3A">
+                        <x-botones
+                            onclick="@if (isset($proyectoSeleccionado)) openModal('tareaModal') @else alert('Selecciona un proyecto primero') @endif"
+                            text="+ Tarea" type="button" color="#191919" text_color="#fff" size="sm" height="small"
+                            border_color="#3A3A3A">
                         </x-botones>
                     </div>
                 </x-proyectocontenido>
-                
+
                 <div class="grid w-full mt-2 border-2 border-gray-700 rounded-[10px] p-4 mr-2">
-                    @if(isset($tareas) && $tareas->count() > 0)
-                        @foreach($tareas as $tarea)
-                            <x-tarea 
-                                width="w-full" 
-                                display="inline-block" 
-                                justify="justify-center" 
-                                height="auto" 
-                                :estados="$estados"
-                                :tarea="$tarea"
-                            />
+                    @if (isset($tareas) && $tareas->count() > 0)
+                        @foreach ($tareas as $tarea)
+                            <x-tarea width="w-full" display="inline-block" justify="justify-center" height="auto"
+                                :estados="$estados" :tarea="$tarea" />
                         @endforeach
                     @elseif(isset($proyectoSeleccionado))
                         <div class="text-gray-500 text-center py-8">
@@ -111,9 +106,10 @@
                         </div>
                     @endif
                 </div>
-                    <!-- Grid de tareas debajo del filtro y botón + Tarea -->
+                <!-- Grid de tareas debajo del filtro y botón + Tarea -->
                 <!-- Modal para crear tarea -->
-                <div id="tareaModal" class="hidden fixed inset-0 z-50 items-center justify-center bg-black bg-opacity-50">
+                <div id="tareaModal"
+                    class="hidden fixed inset-0 z-50 items-center justify-center bg-black bg-opacity-50 flex-col">
                     <div class="bg-[#232323] rounded-lg p-8 w-[400px] mx-auto flex flex-col">
                         <div class="flex justify-between items-center mb-4">
                             <h2 class="text-xl text-white font-bold">Crear Tarea</h2>
@@ -122,8 +118,8 @@
                         </div>
                         <form method="POST" action="{{ route('tareas.store') }}">
                             @csrf
-                            @if(isset($proyectoSeleccionado))
-                            <input type="hidden" name="id_proyecto" value="{{ $proyectoSeleccionado->id }}">
+                            @if (isset($proyectoSeleccionado))
+                                <input type="hidden" name="id_proyecto" value="{{ $proyectoSeleccionado->id }}">
                             @endif
                             <input type="text" name="nombre_tarea"
                                 class="w-full p-2 rounded bg-[#2C2C2C] text-white border border-[#3A3A3A] mb-4"
@@ -134,7 +130,7 @@
                                 class="w-full p-2 rounded bg-[#2C2C2C] text-white border border-[#3A3A3A] mb-4"
                                 placeholder="Fecha de Límite">
                             <x-prioridad :prioridad="$prioridad" />
-                            
+
                             <div class="flex justify-end">
                                 <x-botones text="Guardar" type="submit" color="#191919" text_color="#fff"
                                     size="sm" height="small" border_color="#3A3A3A" />
