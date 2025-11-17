@@ -19,7 +19,7 @@
 
                     <input type="password" name="contraseña" placeholder="Contraseña" style="background-color: #191919; border-color: #3a3a3a;" class="border w-full text-white font-medium rounded-lg px-5 py-3 transition-all duration-200 outline-none placeholder-gray-400" />
 
-                    <input type="password" name="contraseña" placeholder="Confirmar contraseña" style="background-color: #191919; border-color: #3a3a3a;" class="border w-full text-white font-medium rounded-lg px-5 py-3 transition-all duration-200 outline-none placeholder-gray-400" />
+                    <input type="password" name="contraseña_confirmation" placeholder="Confirmar contraseña" style="background-color: #191919; border-color: #3a3a3a;" class="border w-full text-white font-medium rounded-lg px-5 py-3 transition-all duration-200 outline-none placeholder-gray-400" />
                     <div class="pt-4 flex justify-center">
                         <x-botones
                             text="Confirmar"

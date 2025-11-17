@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Estado;
 use App\Models\Proyecto;
 use Illuminate\Http\Request;
 
@@ -14,7 +15,8 @@ class ProyectoController extends Controller
     {
         //
         $proyectos = Proyecto::all();
-        return view('proyecto', compact('proyectos'));
+        $estados = Estado::all(); // ← Añadir esto
+        return view('proyecto', compact('proyectos', 'estados'));
         
     }
 
