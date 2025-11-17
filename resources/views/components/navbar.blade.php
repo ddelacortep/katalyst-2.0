@@ -18,6 +18,9 @@
 </div>
 
 {{-- ⚠️⚠️ Imagen de logout DE PRUEBA ⚠️⚠️ (Columnas 11 y 12) --}}
-<div class="col-span-2 flex items-center justify-end">
+<div class="col-span-2 flex items-center justify-end gap-3">
+    <span class="text-white font-medium text-sm">
+        {{ Auth::user()->nombre_usuario ?? 'Usuario' }}
+    </span>
     <img src="images/logout.svg" alt="Logout">
 </div>
