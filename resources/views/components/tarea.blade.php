@@ -12,7 +12,6 @@
 ])
 
 <div class="{{ $width }} {{ $height == 'auto' ? '' : $height }} flex flex-col gap-2 {{ $padding }} {{ $bg }} {{ $borderColor }} {{ $rounded }}">
-    <x-dropdown :estados="$estados" />
 
     <div class="flex justify-end">
         <x-botones text="Delete" type="button" color="#191919" text_color="#fff" size="sm"

@@ -88,8 +88,6 @@
                 
                 <div class="grid w-full mt-2 border-2 border-gray-700 rounded-[10px] p-4 mr-2">
                     <x-tarea width="w-full" display="inline-block" justify="justify-center" height="auto" :estados="$estados"/>
-                    
-                    
                 </div>
                     <!-- Grid de tareas debajo del filtro y botón + Tarea -->
                 <!-- Modal para crear tarea -->
@@ -107,6 +105,11 @@
                                 placeholder="Nombre de la tarea" required>
                             <textarea name="descripcion" class="w-full p-2 rounded bg-[#2C2C2C] text-white border border-[#3A3A3A] mb-4"
                                 placeholder="Descripción"></textarea>
+                            <input type="date" name="fecha_limite"
+                                class="w-full p-2 rounded bg-[#2C2C2C] text-white border border-[#3A3A3A] mb-4"
+                                placeholder="Fecha de Límite">
+                            <x-prioridad :prioridad="$prioridad" />
+                            
                             <div class="flex justify-end">
                                 <x-botones text="Guardar" type="submit" color="#191919" text_color="#fff"
                                     size="sm" height="small" border_color="#3A3A3A" />

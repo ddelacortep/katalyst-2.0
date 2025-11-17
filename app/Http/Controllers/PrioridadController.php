@@ -13,6 +13,7 @@ class PrioridadController extends Controller
     public function index()
     {
         //
+        
     }
 
     /**
