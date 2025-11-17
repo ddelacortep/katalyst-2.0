@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProyectoController;
 use App\Http\Controllers\TareaController;
+use App\Http\Controllers\LoginController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -19,6 +20,12 @@ Route::get('/register', function () {
 Route::get('/prueba', function () {
     return view('prueba');
 })->name('prueba');
+
+Route::get('/login', [LoginController::class, 'showLoginForm'])
+    ->name('login'); 
+
+Route::post('/login', [LoginController::class, 'login'])
+    ->name('login.submit');
 
 // ---------------------
 

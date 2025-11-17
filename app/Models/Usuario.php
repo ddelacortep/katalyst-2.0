@@ -3,16 +3,25 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 
-class Usuario extends Model
+
+class Usuario extends Authenticatable
 {
+    use HasFactory, Notifiable;
+
     //
     protected $table = 'Usuario';
 
     // private $primaryKey = 'id';
     public $timestamps = false;
-
     public $incrementing = false;
+
+    protected $fillable = ['id', 'nombre_usuario', 'correo', 'contrasena'];
+    protected $hidden = ['contrasena'];
+    
 
     public function participa()
     {

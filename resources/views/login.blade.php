@@ -15,23 +15,26 @@
                     </div>
 
                     <!-- FORM -->
-                    <form action="#" method="POST">
+                    <form action="{{ route('login.submit') }}" method="POST">
                         @csrf
+                        @if(session('error'))
+                            <div class="text-red-500 mb-4">{{ session('error') }}</div>
+                        @endif
                         <div class="w-full justify-center align-center">
-                            <x-input name="Username" type="text" placeholder="Nombre de usuario" heigth="h-[50px]"
+                            <x-input name="nombre_usuario" type="text" placeholder="Nombre de usuario" heigth="h-[50px]"
                                 width="w-full" padding="p-[10px]" borderRadius="rounded-[10px]" />
                         </div>
 
                         <div class="w-full mt-4 justify-center align-center">
-                            <x-input name="Password" type="password" placeholder="Contraseña" heigth="h-[50px]"
+                            <x-input name="contraseña" type="password" placeholder="Contraseña" heigth="h-[50px]"
                                 width="w-full" padding="p-[10px]" borderRadius="rounded-[10px]" />
                         </div>
 
 
                         <!-- BOTÓN ENTER -->
                         <div class="pt-4 flex justify-center">
-                            <x-botones text="ENTER" type="button" color="#191919" size="md" height="small"
-                                href="{{ route('prueba') }}" border_color="bg-[#191919]">
+                            <x-botones text="ENTER" type="submit" color="#191919" size="md" height="small"
+                             border_color="bg-[#191919]">
                             </x-botones>
                         </div>
                     </form>
