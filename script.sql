@@ -75,3 +75,8 @@ INSERT INTO "Estado" ("nombre_estado") VALUES
 ('En Progreso'),
 ('Completado'),
 GO
+
+INSERT INTO "Prioridad" ("nombre_prioridad") VALUES
+('Baja'),
+('Media'),
+('Alta')
