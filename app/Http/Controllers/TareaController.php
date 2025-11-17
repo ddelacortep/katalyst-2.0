@@ -21,9 +21,7 @@ class TareaController extends Controller
     public function create()
     {
         //
-        $tarea = new Tarea;
-        $tarea->nombre_tarea = request('nombre_tarea');
-        $tarea->descripcion = request('descripcion');
+        
     }
 
     /**
@@ -32,6 +30,14 @@ class TareaController extends Controller
     public function store(Request $request)
     {
         //
+        $tarea = new Tarea;
+        $tarea->nombre_tarea = request('nombre_tarea');
+        $tarea->desc_tarea = request('desc_tarea');
+        $tarea->id=1;
+        $tarea->id_proyecto = 1;
+        $tarea->fecha_creacion = now();
+        $tarea->save();
+        return redirect()->route('proyecto');
     }
 
     /**

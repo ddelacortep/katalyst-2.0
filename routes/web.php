@@ -25,8 +25,8 @@ Route::get('/prueba', function () {
 Route::post('/proyecto/guardar', [ProyectoController::class, 'store'])
     ->name('proyecto.store');
 
-Route::post('/tareas/crear', [TareaController::class, 'create'])
-    ->name('tareas.create');
+Route::post('/tareas/guardar', [TareaController::class, 'store'])
+    ->name('tareas.store');
 
 Route::get('/proyecto', [ProyectoController::class, 'index'])
     ->name('proyecto'); 
