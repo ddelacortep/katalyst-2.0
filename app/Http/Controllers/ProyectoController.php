@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Tarea;
 use App\Models\Estado;
 use App\Models\Proyecto;
 use App\Models\Prioridad;
@@ -52,9 +53,22 @@ class ProyectoController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Proyecto $proyecto)
+    public function show($id)
     {
         //
+        $proyectos = Proyecto::all();  // Para el sidebar
+        $proyectoSeleccionado = Proyecto::findOrFail($id);
+        $tareas = Tarea::where('id_proyecto', $proyectoSeleccionado->id)->get();  // Solo tareas del proyecto
+        $estados = Estado::all();
+        $prioridad = Prioridad::all();
+        
+        return view('proyecto', compact(
+            'proyectos', 
+            'proyectoSeleccionado', 
+            'tareas', 
+            'estados', 
+            'prioridad'
+        ));
     }
 
     /**

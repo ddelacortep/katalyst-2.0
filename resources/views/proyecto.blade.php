@@ -33,7 +33,8 @@
                             @if (isset($proyectos) && $proyectos->count() > 0)
                                 @foreach ($proyectos as $proyecto)
                                     <x-proyectos height="h-[60px]" width="w-[170px]" padding="p-3"
-                                        onclick="seleccionarProyecto({{ $proyecto->id }})">
+                                        class="@if(isset($proyectoSeleccionado) && $proyectoSeleccionado->id == $proyecto->id) border-blue-500 border-4 @endif"
+                                        onclick="window.location.href='{{ route('proyecto.show', $proyecto->id) }}'">
 
                                         <div class="w-full flex items-center justify-center px-2">
                                             <h2 class="text-white font-semibold text-sm truncate max-w-full">
@@ -80,14 +81,35 @@
                         </x-botones>
                     </div>
                     <div class="flex justify-end items-start">
-                        <x-botones onclick="openModal('tareaModal')" text="+ Tarea" type="button" color="#191919"
+                        <x-botones onclick="@if(isset($proyectoSeleccionado)) openModal('tareaModal') @else alert('Selecciona un proyecto primero') @endif" 
+                            text="+ Tarea" type="button" color="#191919"
                             text_color="#fff" size="sm" height="small" border_color="#3A3A3A">
                         </x-botones>
                     </div>
                 </x-proyectocontenido>
                 
                 <div class="grid w-full mt-2 border-2 border-gray-700 rounded-[10px] p-4 mr-2">
-                    <x-tarea width="w-full" display="inline-block" justify="justify-center" height="auto" :estados="$estados"/>
+                    @if(isset($tareas) && $tareas->count() > 0)
+                        @foreach($tareas as $tarea)
+                            <x-tarea 
+                                width="w-full" 
+                                display="inline-block" 
+                                justify="justify-center" 
+                                height="auto" 
+                                :estados="$estados"
+                                :tarea="$tarea"
+                            />
+                        @endforeach
+                    @elseif(isset($proyectoSeleccionado))
+                        <div class="text-gray-500 text-center py-8">
+                            <p>No hay tareas en este proyecto</p>
+                            <p class="text-sm mt-2">Crea tu primera tarea</p>
+                        </div>
+                    @else
+                        <div class="text-gray-500 text-center py-8">
+                            <p>Selecciona un proyecto para ver sus tareas</p>
+                        </div>
+                    @endif
                 </div>
                     <!-- Grid de tareas debajo del filtro y botón + Tarea -->
                 <!-- Modal para crear tarea -->
@@ -100,6 +122,9 @@
                         </div>
                         <form method="POST" action="{{ route('tareas.store') }}">
                             @csrf
+                            @if(isset($proyectoSeleccionado))
+                            <input type="hidden" name="id_proyecto" value="{{ $proyectoSeleccionado->id }}">
+                            @endif
                             <input type="text" name="nombre_tarea"
                                 class="w-full p-2 rounded bg-[#2C2C2C] text-white border border-[#3A3A3A] mb-4"
                                 placeholder="Nombre de la tarea" required>

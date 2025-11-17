@@ -51,3 +51,6 @@ Route::post('/tareas/guardar', [TareaController::class, 'store'])
 Route::get('/proyecto', [ProyectoController::class, 'index'])
     ->name('proyecto');
 
+Route::get('/proyecto/{id}', [ProyectoController::class, 'show'])
+    ->name('proyecto.show');
+
