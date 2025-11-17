@@ -92,8 +92,17 @@
                 <div class="grid w-full mt-2 border-2 border-gray-700 rounded-[10px] p-4 mr-2">
                     @if (isset($tareas) && $tareas->count() > 0)
                         @foreach ($tareas as $tarea)
-                            <x-tarea width="w-full" display="inline-block" justify="justify-center" height="auto"
-                                :estados="$estados" :tarea="$tarea" />
+                            <div flex class="bg-gray-800 rounded-lg p-4 mb-2">
+                                <h3 class="text-lg font-bold text-white">{{ $tarea->nombre_tarea }}</h3>
+                                <p class="text-gray-300 mb-1">{{ $tarea->desc_tarea }}</p>
+                                <p class="text-gray-400 text-sm">Fecha creación: {{ $tarea->fecha_creacion }}</p>
+                                <p class="text-gray-400 text-sm">Fecha límite: {{ $tarea->fecha_limite }}</p>
+                                <p class="text-gray-400 text-sm">Prioridad: {{ $tarea->id_prioridad }}</p>
+                                <p class="text-gray-400 text-sm">Estado: {{ $tarea->id_estado }}</p>
+                                <p class="text-gray-400 text-sm">Usuario: {{ $tarea->id_usuario }}</p>
+                                <x-tarea width="w-full" display="inline-block" justify="justify-center" height="auto"
+                                    :estados="$estados" :tarea="$tarea" bg="transparent" />
+                            </div>
                         @endforeach
                     @elseif(isset($proyectoSeleccionado))
                         <div class="text-gray-500 text-center py-8">

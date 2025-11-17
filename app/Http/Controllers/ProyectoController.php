@@ -57,13 +57,19 @@ class ProyectoController extends Controller
     public function show($id)
     {
         //
-        $proyectos = Proyecto::all();  // Para el sidebar
-        $proyectoSeleccionado = Proyecto::findOrFail($id);
+        $proyectos = Proyecto::all();
+        $proyectoSeleccionado = Proyecto::find($id);
         $tareas = Tarea::where('id_proyecto', $proyectoSeleccionado->id)->get();
         $estados = Estado::all();
         $prioridad = Prioridad::all();
 
-        return view('proyecto', compact('proyectos', 'proyectoSeleccionado', 'tareas', 'estados', 'prioridad'));
+        return view('proyecto', compact(
+            'proyectos',
+            'proyectoSeleccionado',
+            'tareas',
+            'estados',
+            'prioridad', // <-- pasa la tarea a editar
+        ));
 
     }
 

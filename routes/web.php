@@ -1,15 +1,14 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
-use App\Http\Controllers\TareaController;
-use App\Http\Controllers\EstadoController;
 use App\Http\Controllers\ProyectoController;
 use App\Http\Controllers\RegisterController;
+use App\Http\Controllers\TareaController;
+use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/proyecto', [ProyectoController::class, 'index'])
-    ->name('proyecto');
+        ->name('proyecto');
 });
 
 Route::get('/', function () {
@@ -29,7 +28,7 @@ Route::get('/prueba', function () {
 })->name('prueba');
 
 Route::get('/login', [LoginController::class, 'showLoginForm'])
-    ->name('login'); 
+    ->name('login');
 
 Route::post('/login', [LoginController::class, 'login'])
     ->name('login.submit');
@@ -48,9 +47,15 @@ Route::post('/proyecto/guardar', [ProyectoController::class, 'store'])
 Route::post('/tareas/guardar', [TareaController::class, 'store'])
     ->name('tareas.store');
 
+Route::delete('/tareas/{id}', [TareaController::class, 'destroy'])
+    ->name('tareas.destroy');
+
 Route::get('/proyecto', [ProyectoController::class, 'index'])
     ->name('proyecto');
 
 Route::get('/proyecto/{id}', [ProyectoController::class, 'show'])
     ->name('proyecto.show');
 
+Route::get('/proyecto/{id}', [ProyectoController::class, 'show'])->name('proyecto.show');
+
+Route::get('/tareas/{id}/edit', [TareaController::class, 'edit'])->name('tareas.edit');
