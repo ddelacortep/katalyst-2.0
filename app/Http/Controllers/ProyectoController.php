@@ -15,6 +15,7 @@ class ProyectoController extends Controller
         //
         $proyectos = Proyecto::all();
         return view('proyecto', compact('proyectos'));
+        
     }
 
     /**
