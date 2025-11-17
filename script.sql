@@ -70,3 +70,8 @@ ALTER TABLE
     "Tarea" ADD CONSTRAINT "tarea_id_usuario_foreign" FOREIGN KEY("id_usuario") REFERENCES "Usuario"("id");
 ALTER TABLE
     "Tarea" ADD CONSTRAINT "tarea_id_prioridad_foreign" FOREIGN KEY("id_prioridad") REFERENCES "Prioridad"("id");
+INSERT INTO "Estado" ("nombre_estado") VALUES
+('Pendiente'),
+('En Progreso'),
+('Completado'),
+GO

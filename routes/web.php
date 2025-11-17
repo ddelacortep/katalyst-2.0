@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\TareaController;
+use App\Http\Controllers\EstadoController;
 use App\Http\Controllers\ProyectoController;
 use App\Http\Controllers\RegisterController;
 
@@ -43,4 +44,6 @@ Route::post('/tareas/guardar', [TareaController::class, 'store'])
     ->name('tareas.store');
 
 Route::get('/proyecto', [ProyectoController::class, 'index'])
-    ->name('proyecto'); 
+    ->name('proyecto');
+
+Route::get('/proyecto', [EstadoController::class, 'index']);
