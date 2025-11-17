@@ -10,15 +10,15 @@
         </div>
 
         {{-- GRID PRINCIPAL: ocupa el resto del espacio --}}
-        <div class="grid gap-1.5 flex-1" style="grid-template-columns: 71px 0.8fr 5fr;">
+        <div class="grid gap-1.5 flex-1 min-h-0" style="grid-template-columns: 71px 0.8fr 5fr;">
             <div>
                 <x-fixedbar />
             </div>
 
             {{-- ⚠️⚠️ Esto tiene que ser cambiado por un componente real de gestion de proyectos (DaniDLC) ⚠️⚠️ --}}
-            <div class="bg-transparent ml-[6px] mb-[6px] h-full">
-                <x-gestionproyecto marginBottom="border-b-4"> 
-                    <div class="grid grid-cols-2 gap-4 flex items-center">
+            <div class="bg-transparent ml-[6px] mb-[6px] flex flex-col min-h-0 h-auto">
+                <x-gestionproyecto marginBottom="border-b-4" height="h-[calc(100vh-152px)]"> 
+                    <div class="flex-shrink-0 grid grid-cols-2 gap-4 flex items-center">
                         <h2 class="text-2xl font-semibold text-[#fff] flex items-center justify-center">Inicio</h2>
                         <div class="flex justify-center">
                             <x-botones  onclick="openModal('targetaModal')"
@@ -32,33 +32,51 @@
                             </x-botones>
                         </div>
                     </div>
-                    <div class="mt-6 space-y-3 overflow-y-auto max-h-[calc(100vh-200px)] 
+                    <div class="flex-1 mt-6 overflow-y-auto min-h-0 pr-2
                     [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
-                        @if(isset($proyectos) && $proyectos->count() > 0)
-                            @foreach($proyectos as $proyecto)
-                                <x-proyectos 
-                                    height="h-[50px]" 
-                                    width="w-[95%]"
-                                    onclick="seleccionarProyecto({{ $proyecto->id }})">
-                                    
-                                    <div class="text-center">
-                                        <h2 class="text-white font-semibold text-base md:text-lg lg:text-xl truncate px-2 max-w-full overflow-hidden">
-                                            {{ $proyecto->nombre_proyecto }}
-                                        </h2>
-                                    </div>
-                                </x-proyectos>
-                            @endforeach
-                        @else
-                            <div class="text-gray-500 text-center py-8">
-                                <p>No hay proyectos aún</p>
-                                <p class="text-sm mt-2">Crea tu primer proyecto</p>
-                            </div>
-                        @endif
+                        <div class="flex flex-col items-center space-y-3">
+                            @if(isset($proyectos) && $proyectos->count() > 0)
+                                @foreach($proyectos as $proyecto)
+                                    <x-proyectos 
+                                        height="h-[60px]" 
+                                        width="w-[170px]"
+                                        padding="p-3"
+                                        onclick="seleccionarProyecto({{ $proyecto->id }})">
+                                        
+                                        <div class="w-full flex items-center justify-center px-2">
+                                            <h2 class="text-white font-semibold text-sm truncate max-w-full">
+                                                {{ $proyecto->nombre_proyecto }}
+                                            </h2>
+                                        </div>
+                                    </x-proyectos>
+                                @endforeach
+                            @else
+                                <div class="text-gray-500 text-center py-8">
+                                    <p>No hay proyectos aún</p>
+                                    <p class="text-sm mt-2">Crea tu primer proyecto</p>
+                                </div>
+                            @endif
+                        </div>
+                    </div>
+                    <div>
+                        <x-targeta id="targetaModal" onclick="closeModal('targetaModal')" title="Crear Proyecto" text="hola" height="h-[200px]" width="w-[750px]" padding="p-6">
+                            <h2 class='text-white'>Información del proyecto</h2>
+                            <br>
+                            <form method="POST" action="{{ route('proyecto.store') }}">
+                                @csrf
+                                <input type="text" name="nombre_proyecto" class="w-full p-3 rounded-lg bg-[#2C2C2C] text-white border border-[#3A3A3A]" placeholder="Nombre del proyecto">
+                                <div class="flex justify-end mt-4">
+                                    <x-botones text="Guardar" type="submit" color="#191919" text_color="#fff" size="sm"
+                                        height="small" border_color="#3A3A3A" class="mt-4">
+                                    </x-botones>
+                                </div>
+                            </form>
+                        </x-targeta>
                     </div>
                 </x-gestionproyecto>
             </div>
 
-            {{-- ⚠️⚠️ Aqui tienen que ir todos los proyectos creados ⚠️⚠️ --}}
+            {{-- ⚠️⚠️ Aqui tienen que ir todoas las tareas creadas ⚠️⚠️ --}}
             <div class="h-full">
                 <x-proyectocontenido flex="flex justify-between" class="h-full">
                     <div class="flex justify-start items-start">
@@ -71,23 +89,7 @@
                             height="small" href="{{ route('prueba') }}" border_color="#3A3A3A">
                         </x-botones>
                     </div>
-
                 </x-proyectocontenido>
-                <div>
-                    <x-targeta id="targetaModal" onclick="closeModal('targetaModal')" title="Crear Proyecto" text="hola" height="h-[200px]" width="w-[750px]" padding="p-6">
-                        <h2 class='text-white'>Información del proyecto</h2>
-                        <br>
-                        <form method="POST" action="{{ route('proyecto.store') }}">
-                            @csrf
-                            <input type="text" name="nombre_proyecto" class="w-full p-3 rounded-lg bg-[#2C2C2C] text-white border border-[#3A3A3A]" placeholder="Nombre del proyecto">
-                        </form>
-                        <div class="flex justify-end mt-4">
-                        <x-botones text="Guardar" type="submit" color="#191919" text_color="#fff" size="sm"
-                            height="small" href="{{ route('prueba') }}" border_color="#3A3A3A" class="mt-4">
-                        </x-botones>
-                        </div>
-                    </x-targeta>
-                </div>
             </div>
         </div>
     </div>

@@ -9,6 +9,7 @@
     'showClose' => 'true',
     'onclick' => '',
     'aspectRatio' => '',
+    'borderRadius' => 'rounded-[10px]',
 ])
 
 <div id="{{ $id }}" onclick="closeModal('{{ $id }}')" 
