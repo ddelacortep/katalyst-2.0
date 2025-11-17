@@ -81,11 +81,19 @@
                         </x-botones>
                     </div>
                     <div class="flex justify-end items-start">
-                        <x-botones
-                            onclick="@if (isset($proyectoSeleccionado)) openModal('tareaModal') @else alert('Selecciona un proyecto primero') @endif"
-                            text="+ Tarea" type="button" color="#191919" text_color="#fff" size="sm" height="small"
-                            border_color="#3A3A3A">
-                        </x-botones>
+                        @if (isset($proyectoSeleccionado) && $proyectoSeleccionado)
+                            <x-botones
+                                onclick="openModal('tareaModal')"
+                                text="+ Tarea" type="button" color="#191919" text_color="#fff" size="sm" height="small"
+                                border_color="#3A3A3A">
+                            </x-botones>
+                        @else
+                            <x-botones
+                                onclick="alert('Selecciona un proyecto primero')"
+                                text="+ Tarea" type="button" color="#191919" text_color="#fff" size="sm" height="small"
+                                border_color="#3A3A3A">
+                            </x-botones>
+                        @endif
                     </div>
                 </x-proyectocontenido>
 
@@ -115,38 +123,49 @@
                         </div>
                     @endif
                 </div>
-                <!-- Grid de tareas debajo del filtro y botón + Tarea -->
-                <!-- Modal para crear tarea -->
-                <div id="tareaModal"
-                    class="hidden fixed inset-0 z-50 items-center justify-center bg-black bg-opacity-50 flex-col">
-                    <div class="bg-[#232323] rounded-lg p-8 w-[400px] mx-auto flex flex-col">
-                        <div class="flex justify-between items-center mb-4">
-                            <h2 class="text-xl text-white font-bold">Crear Tarea</h2>
-                            <x-botones text="×" type="button" color="#232323" text_color="#fff" size="md"
-                                height="small" border_color="#3A3A3A" onclick="closeModal('tareaModal')" />
-                        </div>
-                        <form method="POST" action="{{ route('tareas.store') }}">
-                            @csrf
-                            @if (isset($proyectoSeleccionado))
-                                <input type="hidden" name="id_proyecto" value="{{ $proyectoSeleccionado->id }}">
-                            @endif
+                
+                <!-- x-targeta para crear tarea -->
+                <x-targeta id="tareaModal"  title="Crear Tarea"
+                    text="Nueva tarea" height="h-auto" width="w-[750px]" padding="p-6">
+                    <h2 class='text-white mb-4'>Información de la tarea</h2>
+                    <form method="POST" action="{{ route('tareas.store') }}">
+                        @csrf
+                        @if(isset($proyectoSeleccionado) && $proyectoSeleccionado)
+                            <input type="hidden" name="id_proyecto" value="{{ $proyectoSeleccionado->id }}">
+                        @endif
+                        
+                        <div class="mb-4">
+                            <label class="block text-gray-400 text-sm mb-2">Nombre de la tarea</label>
                             <input type="text" name="nombre_tarea"
-                                class="w-full p-2 rounded bg-[#2C2C2C] text-white border border-[#3A3A3A] mb-4"
+                                class="w-full p-3 rounded-lg bg-[#2C2C2C] text-white border border-[#3A3A3A]"
                                 placeholder="Nombre de la tarea" required>
-                            <textarea name="descripcion" class="w-full p-2 rounded bg-[#2C2C2C] text-white border border-[#3A3A3A] mb-4"
-                                placeholder="Descripción"></textarea>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label class="block text-gray-400 text-sm mb-2">Descripción</label>
+                            <textarea name="descripcion" rows="4"
+                                class="w-full p-3 rounded-lg bg-[#2C2C2C] text-white border border-[#3A3A3A]"
+                                placeholder="Descripción de la tarea"></textarea>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label class="block text-gray-400 text-sm mb-2">Fecha límite</label>
                             <input type="date" name="fecha_limite"
-                                class="w-full p-2 rounded bg-[#2C2C2C] text-white border border-[#3A3A3A] mb-4"
-                                placeholder="Fecha de Límite">
+                                class="w-full p-3 rounded-lg bg-[#2C2C2C] text-white border border-[#3A3A3A]">
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label class="block text-gray-400 text-sm mb-2">Prioridad</label>
                             <x-prioridad :prioridad="$prioridad" />
+                        </div>
 
-                            <div class="flex justify-end">
-                                <x-botones text="Guardar" type="submit" color="#191919" text_color="#fff"
-                                    size="sm" height="small" border_color="#3A3A3A" />
-                            </div>
-                        </form>
-                    </div>
-                </div>
+                        <div class="flex justify-end mt-6">
+                            <x-botones text="Guardar" type="submit" color="#191919" text_color="#fff"
+                                size="sm" height="small" border_color="#3A3A3A">
+                            </x-botones>
+                        </div>
+                    </form>
+                </x-targeta>
             </div>
         </div>
     </div>

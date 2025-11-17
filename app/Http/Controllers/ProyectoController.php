@@ -19,8 +19,10 @@ class ProyectoController extends Controller
         $proyectos = Proyecto::all();
         $estados = Estado::all(); // ← Añadir esto
         $prioridad = Prioridad::all(); // ← Añadir esto
+        $proyectoSeleccionado = null; // No hay proyecto seleccionado en la vista inicial
+        $tareas = collect(); // Colección vacía de tareas
 
-        return view('proyecto', compact('proyectos', 'estados', 'prioridad'));
+        return view('proyecto', compact('proyectos', 'estados', 'prioridad', 'proyectoSeleccionado', 'tareas'));
 
     }
 
