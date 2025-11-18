@@ -85,7 +85,7 @@
                             <x-botones
                                 onclick="openModal('tareaModal')"
                                 text="+ Tarea" type="button" color="#191919" text_color="#fff" size="sm" height="small"
-                                border_color="#3A3A3A">
+                                border_color="#3A3A3A" marginRight="mr-5">
                             </x-botones>
                             <form method="POST" action="{{ route('proyecto.destroy', $proyectoSeleccionado->id) }}" onsubmit="return confirm('¿Seguro que quieres eliminar este proyecto?');">
                                 @csrf
@@ -102,19 +102,24 @@
                     </div>
                 </x-proyectocontenido>
 
-                <div class="grid w-full mt-2 border-2 border-gray-700 rounded-[10px] p-4 mr-2 overflow-y-auto max-h-[74vh]">
+
+                <div class="w-full mt-2 border-2 border-gray-700 rounded-[10px] p-4 mr-2 overflow-y-auto max-h-[74vh]">
                     @if (isset($tareas) && $tareas->count() > 0)
-                        @foreach ($tareas as $tarea)
-                            <div flex class="bg-gray-800 rounded-lg p-4 mb-2">
-                                <h3 class="text-lg font-bold text-white">{{ $tarea->nombre_tarea }}</h3>
-                                <p class="text-gray-300 mb-1">{{ $tarea->desc_tarea }}</p>
-                                <p class="text-gray-400 text-sm">Fecha creación: {{ $tarea->fecha_creacion }}</p>
-                                <p class="text-gray-400 text-sm">Fecha límite: {{ $tarea->fecha_limite }}</p>
-                                <p class="text-gray-400 text-sm">Prioridad: {{ $tarea->prioridad->nombre_prioridad }}</p>
-                                <p class="text-gray-400 text-sm">Estado: {{ $tarea->estado ? $tarea->estado->nombre_estado : '' }}</p>
-                                <p class="text-gray-400 text-sm">Usuario: {{ $tarea->nombre_usuario }}</p>
-                                <x-tarea width="w-full" display="inline-block" justify="justify-center" height="auto"
-                                    :estados="$estados" :tarea="$tarea" bg="transparent" />
+                        @foreach ($tareas->chunk(2) as $tareaFila)
+                            <div class="flex flex-row gap-4 mb-4">
+                                @foreach ($tareaFila as $tarea)
+                                    <div class="bg-gray-800 rounded-lg p-4 flex-1">
+                                        <h3 class="text-lg font-bold text-white">{{ $tarea->nombre_tarea }}</h3>
+                                        <p class="text-gray-300 mb-1">{{ $tarea->desc_tarea }}</p>
+                                        <p class="text-gray-400 text-sm">Fecha creación: {{ $tarea->fecha_creacion }}</p>
+                                        <p class="text-gray-400 text-sm">Fecha límite: {{ $tarea->fecha_limite }}</p>
+                                        <p class="text-gray-400 text-sm">Prioridad: {{ $tarea->prioridad->nombre_prioridad ?? '' }}</p>
+                                        <p class="text-gray-400 text-sm">Estado: {{ $tarea->estado?->nombre_estado ?? '' }}</p>
+                                        <p class="text-gray-400 text-sm">Usuario: {{ $tarea->nombre_usuario }}</p>
+                                        <x-tarea width="w-full" display="inline-block" justify="justify-center" height="auto"
+                                            :estados="$estados" :tarea="$tarea" bg="transparent" />
+                                    </div>
+                                @endforeach
                             </div>
                         @endforeach
                     @elseif(isset($proyectoSeleccionado))
@@ -166,7 +171,7 @@
                         </div>
 
                         <div class="mb-4">
-                            <label class="block text-gray-400 text-sm mb-2">Prioridad</label>
+                            <label class="block text-gray-400 text-sm mb-2">Estados</label>
                             <x-estados :estados="$estados" />
                         </div>
 

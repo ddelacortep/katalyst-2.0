@@ -18,6 +18,17 @@
 </div>
 
 {{-- ⚠️⚠️ Imagen de logout DE PRUEBA ⚠️⚠️ (Columnas 11 y 12) --}}
-<div class="col-span-2 flex items-center justify-end">
-    <img src="{{ asset('images/logout.svg') }}" alt="Logout" class="h-8 w-8 cursor-pointer hover:opacity-80 transition-opacity">
+<div class="col-span-1 flex items-center justify-end gap-1">
+
+    @if(Auth::check())
+        <span class="text-white font-semibold text-base">{{ Auth::user()->nombre_usuario }}</span>
+    @endif
+</div>
+<div class="col-span-1 flex items-center justify-end gap-1">
+    <form method="POST" action="{{ route('logout') }}">
+        @csrf
+        <button type="submit" style="background: none; border: none; padding: 0;">
+            <img src="{{ asset('images/logout.svg') }}" alt="Logout" class="h-8 w-8 cursor-pointer hover:opacity-80 transition-opacity" />
+        </button>
+    </form>
 </div>
