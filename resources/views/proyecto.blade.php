@@ -85,7 +85,7 @@
                             <x-botones
                                 onclick="openModal('tareaModal')"
                                 text="+ Tarea" type="button" color="#191919" text_color="#fff" size="sm" height="small"
-                                border_color="#3A3A3A">
+                                border_color="#3A3A3A" marginRight="mr-5">
                             </x-botones>
                             <form method="POST" action="{{ route('proyecto.destroy', $proyectoSeleccionado->id) }}" onsubmit="return confirm('¿Seguro que quieres eliminar este proyecto?');">
                                 @csrf
@@ -171,7 +171,7 @@
                         </div>
 
                         <div class="mb-4">
-                            <label class="block text-gray-400 text-sm mb-2">Prioridad</label>
+                            <label class="block text-gray-400 text-sm mb-2">Estados</label>
                             <x-estados :estados="$estados" />
                         </div>
 
