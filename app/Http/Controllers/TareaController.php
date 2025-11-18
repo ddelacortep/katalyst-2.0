@@ -13,9 +13,37 @@ class TareaController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $query = Tarea::query();
+
+        $validFiltros = ['fecha', 'prioridad', 'estado'];
+        $errorFiltro = null;
+        if ($request->filled('filtro')) {
+            if (in_array($request->filtro, $validFiltros)) {
+                switch ($request->filtro) {
+                    case 'fecha':
+                        $query->orderBy('fecha_limite');
+                        break;
+                    case 'prioridad':
+                        $query->orderBy('id_prioridad');
+                        break;
+                    case 'estado':
+                        $query->orderBy('id_estado');
+                        break;
+                }
+            } else {
+                $errorFiltro = 'Filtro no válido.';
+            }
+        }
+
+        $tareas = $query->get();
+        $proyectos = Proyecto::all();
+        $estados = Estado::all();
+        $prioridad = Prioridad::all();
+        $proyectoSeleccionado = null;
+        // Puedes ajustar la lógica para seleccionar el proyecto si lo necesitas
+        return view('proyecto', compact('proyectos', 'proyectoSeleccionado', 'tareas', 'estados', 'prioridad', 'errorFiltro'));
     }
 
     /**

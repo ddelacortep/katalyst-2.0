@@ -68,3 +68,5 @@ Route::put('/tareas/{tarea}', [TareaController::class, 'update'])->name('tareas.
 
 Route::delete('/proyecto/{proyecto}', [ProyectoController::class, 'destroy'])->name('proyecto.destroy');
 
+Route::get('tareas', [TareaController::class, 'index'])->name('tareas.index');
+
