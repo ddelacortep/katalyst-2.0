@@ -46,6 +46,7 @@ class ProyectoController extends Controller
 
         $proyecto = new Proyecto;
         $proyecto->nombre_proyecto = $request->nombre_proyecto;
+        $proyecto->id_usuario = auth()->id();
         $proyecto->favorito = false; // Asignar un valor predeterminado si es necesario
         $proyecto->save();
 
