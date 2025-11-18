@@ -97,7 +97,7 @@
                     </div>
                 </x-proyectocontenido>
 
-                <div class="grid w-full mt-2 border-2 border-gray-700 rounded-[10px] p-4 mr-2">
+                <div class="grid w-full mt-2 border-2 border-gray-700 rounded-[10px] p-4 mr-2 overflow-y-auto max-h-[74vh]">
                     @if (isset($tareas) && $tareas->count() > 0)
                         @foreach ($tareas as $tarea)
                             <div flex class="bg-gray-800 rounded-lg p-4 mb-2">
@@ -105,9 +105,9 @@
                                 <p class="text-gray-300 mb-1">{{ $tarea->desc_tarea }}</p>
                                 <p class="text-gray-400 text-sm">Fecha creación: {{ $tarea->fecha_creacion }}</p>
                                 <p class="text-gray-400 text-sm">Fecha límite: {{ $tarea->fecha_limite }}</p>
-                                <p class="text-gray-400 text-sm">Prioridad: {{ $tarea->id_prioridad }}</p>
-                                <p class="text-gray-400 text-sm">Estado: {{ $tarea->id_estado }}</p>
-                                <p class="text-gray-400 text-sm">Usuario: {{ $tarea->id_usuario }}</p>
+                                <p class="text-gray-400 text-sm">Prioridad: {{ $tarea->prioridad->nombre_prioridad }}</p>
+                                <p class="text-gray-400 text-sm">Estado: {{ $tarea->estado ? $tarea->estado->nombre_estado : '' }}</p>
+                                <p class="text-gray-400 text-sm">Usuario: {{ $tarea->nombre_usuario }}</p>
                                 <x-tarea width="w-full" display="inline-block" justify="justify-center" height="auto"
                                     :estados="$estados" :tarea="$tarea" bg="transparent" />
                             </div>
@@ -159,6 +159,11 @@
                             <x-prioridad :prioridad="$prioridad" />
                         </div>
 
+                        <div class="mb-4">
+                            <label class="block text-gray-400 text-sm mb-2">Prioridad</label>
+                            <x-estados :estados="$estados" />
+                        </div>
+
                         <div class="flex justify-end mt-6">
                             <x-botones text="Guardar" type="submit" color="#191919" text_color="#fff"
                                 size="sm" height="small" border_color="#3A3A3A">
@@ -201,6 +206,16 @@
                                 class="w-full p-3 rounded-lg bg-[#2C2C2C] text-white border border-[#3A3A3A]">
                                 @foreach($prioridad as $prior)
                                     <option value="{{ $prior->id }}">{{ $prior->nombre_prioridad }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="block text-gray-400 text-sm mb-2">Estados</label>
+                            <select name="id_estado" id="edit_estados"
+                                class="w-full p-3 rounded-lg bg-[#2C2C2C] text-white border border-[#3A3A3A]">
+                                @foreach($estados as $e)
+                                    <option value="{{ $e->id }}">{{ $e->nombre_estado }}</option>
                                 @endforeach
                             </select>
                         </div>

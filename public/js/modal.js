@@ -10,7 +10,7 @@ function closeModal(modalId) {
     modal.classList.add('hidden');     // Agrega hidden para que no se vea
 }
 
-function openEditarTareaModal(tareaId, nombreTarea, descripcion, fechaLimite, prioridad) {
+function openEditarTareaModal(tareaId, nombreTarea, descripcion, fechaLimite, prioridad, estados) {
     // Actualizar la acción del formulario con el ID de la tarea
     const form = document.getElementById('editarTareaForm');
     form.action = `/tareas/${tareaId}`;
@@ -20,6 +20,7 @@ function openEditarTareaModal(tareaId, nombreTarea, descripcion, fechaLimite, pr
     document.getElementById('edit_descripcion').value = descripcion || '';
     document.getElementById('edit_fecha_limite').value = fechaLimite || '';
     document.getElementById('edit_id_prioridad').value = prioridad || '1';
+    document.getElementById('edit_estados').value = estados || '';
     
     // Abrir el modal
     openModal('editarTareaModal');

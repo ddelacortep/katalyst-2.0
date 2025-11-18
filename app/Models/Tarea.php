@@ -33,4 +33,9 @@ class Tarea extends Model
     {
         return $this->belongsTo(Prioridad::class, 'id_prioridad');
     }
+
+    public function estado()
+    {
+        return $this->belongsTo(Estado::class, 'id_estado');
+    }
 }
