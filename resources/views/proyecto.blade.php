@@ -151,7 +151,8 @@
                         <div class="mb-4">
                             <label class="block text-gray-400 text-sm mb-2">Fecha límite</label>
                             <input type="date" name="fecha_limite"
-                                class="w-full p-3 rounded-lg bg-[#2C2C2C] text-white border border-[#3A3A3A]">
+                                class="w-full p-3 rounded-lg bg-[#2C2C2C] text-white border border-[#3A3A3A]"
+                                min="{{ date('Y-m-d') }}" max="{{ date('Y-m-d', strtotime('+1 year')) }}">
                         </div>
                         
                         <div class="mb-4">
