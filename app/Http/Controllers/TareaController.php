@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Estado;
+use App\Models\Prioridad;
+use App\Models\Proyecto;
 use App\Models\Tarea;
 use Illuminate\Http\Request;
 
@@ -21,7 +24,7 @@ class TareaController extends Controller
     public function create()
     {
         //
-        
+
     }
 
     /**
@@ -30,14 +33,26 @@ class TareaController extends Controller
     public function store(Request $request)
     {
         //
+        $validated = $request->validate([
+            'nombre_tarea' => 'required|string|max:255',
+            'descripcion' => 'nullable|string',
+            'fecha_limite' => 'nullable|date',
+            'id_prioridad' => 'nullable|exists:Prioridad,id',
+            'id_proyecto' => 'required|exists:Proyecto,id',  // ← OBLIGATORIO
+        ]);
+
         $tarea = new Tarea;
-        $tarea->nombre_tarea = request('nombre_tarea');
-        $tarea->desc_tarea = request('desc_tarea');
-        $tarea->id=1;
-        $tarea->id_proyecto = 1;
+        $tarea->nombre_tarea = $request->nombre_tarea;
+        $tarea->desc_tarea = $request->descripcion;
+        $tarea->fecha_limite = $request->fecha_limite;
+        $tarea->id_prioridad = $request->id_prioridad ?? 1;  // Default
+        $tarea->id_proyecto = $request->id_proyecto;  // ← DEL FORMULARIO
         $tarea->fecha_creacion = now();
         $tarea->save();
-        return redirect()->route('proyecto');
+
+        // Redirigir al mismo proyecto
+        return redirect()->route('proyecto.show', $request->id_proyecto)
+            ->with('success', 'Tarea creada exitosamente.');
     }
 
     /**
@@ -53,7 +68,23 @@ class TareaController extends Controller
      */
     public function edit(Tarea $tarea)
     {
-        //
+        // Retorna la vista de edición con la tarea
+        $proyectos = Proyecto::all();
+        $proyectoSeleccionado = Proyecto::find($tarea->id_proyecto);
+        if (! $proyectoSeleccionado) {
+            abort(404, 'Proyecto no encontrado para esta tarea.');
+        }
+        $tareas = Tarea::where('id_proyecto', $proyectoSeleccionado->id)->get();
+        $estados = Estado::all();
+        $prioridad = Prioridad::all();
+
+        return view('proyecto', compact(
+            'proyectos',
+            'proyectoSeleccionado',
+            'tareas',
+            'estados',
+            'prioridad',
+        ));
     }
 
     /**
@@ -69,6 +100,10 @@ class TareaController extends Controller
      */
     public function destroy(Tarea $tarea)
     {
-        //
+        $idProyecto = $tarea->id_proyecto; // Obtener el id del proyecto relacionado
+        $tarea->delete();                  // Eliminar la tarea
+
+        return redirect()->route('proyecto.show', ['id' => $idProyecto])
+            ->with('success', 'Tarea eliminada exitosamente.');
     }
 }

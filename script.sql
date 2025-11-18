@@ -20,7 +20,7 @@ ALTER TABLE
 CREATE TABLE "Tarea"(
     "id" BIGINT IDENTITY(1,1) NOT NULL,
     "nombre_tarea" VARCHAR(255) NOT NULL,
-    "desc_tarea" BIGINT NULL,
+    "desc_tarea" VARCHAR(255) NULL,
     "fecha_creacion" DATE NOT NULL,
     "fecha_limite" DATE NULL,
     "id_prioridad" BIGINT NULL,
@@ -73,9 +73,7 @@ ALTER TABLE
 INSERT INTO "Estado" ("nombre_estado") VALUES
 ('Pendiente'),
 ('En Progreso'),
-('Completado'),
-GO
-
+('Completado');
 INSERT INTO "Prioridad" ("nombre_prioridad") VALUES
 ('Baja'),
 ('Media'),

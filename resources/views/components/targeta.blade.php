@@ -13,7 +13,7 @@
 ])
 
 <div id="{{ $id }}" onclick="closeModal('{{ $id }}')" 
-    class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden items-center justify-center">
+    class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden">
     
     <div onclick="event.stopPropagation()"
         class="relative {{ $width }} {{ $height }} {{ $bg }} {{ $rounded }} {{ $padding }} border-2 {{ $borderColor }} {{ $aspectRatio }}">
