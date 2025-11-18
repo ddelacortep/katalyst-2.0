@@ -61,7 +61,7 @@ class ProyectoController extends Controller
         //
         $proyectos = Proyecto::all();
         $proyectoSeleccionado = Proyecto::find($id);
-        $tareas = Tarea::where('id_proyecto', $proyectoSeleccionado->id)->get();
+        $tareas = $proyectoSeleccionado ? Tarea::where('id_proyecto', $proyectoSeleccionado->id)->get() : collect();
         $estados = Estado::all();
         $prioridad = Prioridad::all();
 
@@ -70,7 +70,7 @@ class ProyectoController extends Controller
             'proyectoSeleccionado',
             'tareas',
             'estados',
-            'prioridad', // <-- pasa la tarea a editar
+            'prioridad',
         ));
 
     }
