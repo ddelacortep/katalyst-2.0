@@ -1,3 +1,4 @@
+
 <?php
 
 use App\Http\Controllers\LoginController;
@@ -61,4 +62,6 @@ Route::get('/proyecto/{id}', [ProyectoController::class, 'show'])->name('proyect
 Route::get('/tareas/{id}/edit', [TareaController::class, 'edit'])->name('tareas.edit');
 
 Route::put('/tareas/{tarea}', [TareaController::class, 'update'])->name('tareas.update');
+
+Route::delete('/proyecto/{proyecto}', [ProyectoController::class, 'destroy'])->name('proyecto.destroy');
 

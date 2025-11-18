@@ -80,13 +80,18 @@
                             height="small" href="{{ route('prueba') }}" img="images/filter.svg" border_color="#3A3A3A">
                         </x-botones>
                     </div>
-                    <div class="flex justify-end items-start">
+                    <div class="flex justify-end items-start gap-2">
                         @if (isset($proyectoSeleccionado) && $proyectoSeleccionado)
                             <x-botones
                                 onclick="openModal('tareaModal')"
                                 text="+ Tarea" type="button" color="#191919" text_color="#fff" size="sm" height="small"
                                 border_color="#3A3A3A">
                             </x-botones>
+                            <form method="POST" action="{{ route('proyecto.destroy', $proyectoSeleccionado->id) }}" onsubmit="return confirm('¿Seguro que quieres eliminar este proyecto?');">
+                                @csrf
+                                @method('DELETE')
+                                <x-botones text="Eliminar Proyecto" type="submit" color="#ff0000" text_color="#fff" size="sm" height="small" border_color="#3A3A3A" />
+                            </form>
                         @else
                             <x-botones
                                 onclick="alert('Selecciona un proyecto primero')"
