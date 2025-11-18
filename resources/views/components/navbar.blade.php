@@ -19,5 +19,5 @@
 
 {{-- ⚠️⚠️ Imagen de logout DE PRUEBA ⚠️⚠️ (Columnas 11 y 12) --}}
 <div class="col-span-2 flex items-center justify-end">
-    <img src="images/logout.svg" alt="Logout">
+    <img src="{{ asset('images/logout.svg') }}" alt="Logout" class="h-8 w-8 cursor-pointer hover:opacity-80 transition-opacity">
 </div>
