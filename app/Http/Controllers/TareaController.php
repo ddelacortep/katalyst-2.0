@@ -26,7 +26,7 @@ class TareaController extends Controller
                         $query->orderBy('fecha_limite');
                         break;
                     case 'prioridad':
-                        $query->orderBy('id_prioridad');
+                        $query->orderBy('id_prioridad', 'desc');
                         break;
                     case 'estado':
                         $query->orderBy('id_estado');
