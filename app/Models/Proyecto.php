@@ -30,7 +30,8 @@ class Proyecto extends Model
 
     protected $fillable = [
         'nombre_proyecto',
-        'favorito'
+        'favorito',
+        'id_usuario'
     ];
 
     protected $casts = [

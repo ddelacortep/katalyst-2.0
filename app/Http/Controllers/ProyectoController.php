@@ -16,7 +16,7 @@ class ProyectoController extends Controller
     public function index()
     {
 
-        $proyectos = Proyecto::all();
+        $proyectos = Proyecto::where('id_usuario', auth()->id())->get();
         $estados = Estado::all(); // ← Añadir esto
         $prioridad = Prioridad::all(); // ← Añadir esto
         $proyectoSeleccionado = null; // No hay proyecto seleccionado en la vista inicial
@@ -60,8 +60,11 @@ class ProyectoController extends Controller
     public function show($id)
     {
         //
-        $proyectos = Proyecto::all();
-        $proyectoSeleccionado = Proyecto::find($id);
+        $proyectos = Proyecto::where('id_usuario', auth()->id())->get();
+        $proyectoSeleccionado = Proyecto::where('id_usuario', auth()->id())->find($id);
+        if (!$proyectoSeleccionado) {
+            abort(403, 'No tienes permiso para ver este proyecto.');
+        }
         $tareas = $proyectoSeleccionado ? Tarea::where('id_proyecto', $proyectoSeleccionado->id)->get() : collect();
         $estados = Estado::all();
         $prioridad = Prioridad::all();
@@ -97,6 +100,9 @@ class ProyectoController extends Controller
      */
     public function destroy(Proyecto $proyecto)
     {
+        if ($proyecto->id_usuario !== auth()->id()) {
+            abort(403, 'No tienes permiso para eliminar este proyecto.');
+        }
         $proyecto->delete();
 
         return redirect('/proyecto');
