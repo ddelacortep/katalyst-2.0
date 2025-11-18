@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Estado;
+use App\Models\Prioridad;
 use App\Models\Proyecto;
+use App\Models\Tarea;
 use Illuminate\Http\Request;
 
 class ProyectoController extends Controller
@@ -13,11 +15,15 @@ class ProyectoController extends Controller
      */
     public function index()
     {
-        //
+
         $proyectos = Proyecto::all();
         $estados = Estado::all(); // ← Añadir esto
-        return view('proyecto', compact('proyectos', 'estados'));
-        
+        $prioridad = Prioridad::all(); // ← Añadir esto
+        $proyectoSeleccionado = null; // No hay proyecto seleccionado en la vista inicial
+        $tareas = collect(); // Colección vacía de tareas
+
+        return view('proyecto', compact('proyectos', 'estados', 'prioridad', 'proyectoSeleccionado', 'tareas'));
+
     }
 
     /**
@@ -50,9 +56,23 @@ class ProyectoController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Proyecto $proyecto)
+    public function show($id)
     {
         //
+        $proyectos = Proyecto::all();
+        $proyectoSeleccionado = Proyecto::find($id);
+        $tareas = Tarea::where('id_proyecto', $proyectoSeleccionado->id)->get();
+        $estados = Estado::all();
+        $prioridad = Prioridad::all();
+
+        return view('proyecto', compact(
+            'proyectos',
+            'proyectoSeleccionado',
+            'tareas',
+            'estados',
+            'prioridad', // <-- pasa la tarea a editar
+        ));
+
     }
 
     /**
@@ -76,6 +96,8 @@ class ProyectoController extends Controller
      */
     public function destroy(Proyecto $proyecto)
     {
-        //
+        $proyecto->delete();
+
+        return redirect('/proyecto');
     }
 }

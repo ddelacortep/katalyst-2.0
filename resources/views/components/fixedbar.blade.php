@@ -1,7 +1,7 @@
 @php
     $iconosArriba = [
         // Aqui o guardas las rutas o el PHP no se entera de nada que hay y ESTA ASI PARA QUE ESTÉN ORDENADOS DESPUES EN LA NAVBAR FIJA
-        ['icono' => 'home.svg', 'ruta' => 'prueba'], // HAY QUE CAMBIAR ESTO PARA QUE VAYA A LA PESTAÑA QUE TOCA
+        ['icono' => 'home.svg', 'ruta' => 'proyecto'], // HAY QUE CAMBIAR ESTO PARA QUE VAYA A LA PESTAÑA QUE TOCA
         ['icono' => 'calendario.svg', 'ruta' => 'prueba'], // HAY QUE CAMBIAR ESTO PARA QUE VAYA A LA PESTAÑA QUE TOCA
         ['icono' => 'time_tracker.svg', 'ruta' => 'prueba'], // HAY QUE CAMBIAR ESTO PARA QUE VAYA A LA PESTAÑA QUE TOCA
         ['icono' => 'star.svg', 'ruta' => 'prueba'], // HAY QUE CAMBIAR ESTO PARA QUE VAYA A LA PESTAÑA QUE TOCA

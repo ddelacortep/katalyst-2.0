@@ -14,9 +14,9 @@ class Proyecto extends Model
 
     public $incrementing = true;
 
-    public function tarea()
+    public function tareas()
     {
-        return $this->hasMany(Tarea::class, 'id');
+        return $this->hasMany(Tarea::class, 'id_proyecto');
     }
 
     public function participa()
