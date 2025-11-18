@@ -38,7 +38,8 @@ class TareaController extends Controller
             'descripcion' => 'nullable|string',
             'fecha_limite' => 'nullable|date',
             'id_prioridad' => 'nullable|exists:Prioridad,id',
-            'id_proyecto' => 'required|exists:Proyecto,id',  // ← OBLIGATORIO
+            'id_proyecto' => 'required|exists:Proyecto,id',
+            'id_estado' => 'nullable|exists:Estado,id',  // ← OBLIGATORIO
         ]);
 
         $tarea = new Tarea;
@@ -47,6 +48,7 @@ class TareaController extends Controller
         $tarea->fecha_limite = $request->fecha_limite;
         $tarea->id_prioridad = $request->id_prioridad ?? 1;  // Default
         $tarea->id_proyecto = $request->id_proyecto;  // ← DEL FORMULARIO
+        $tarea->id_estado = $request->id_estado ?? $tarea->id_estado;  // Default
         $tarea->fecha_creacion = now();
         $tarea->save();
 
@@ -98,6 +100,7 @@ class TareaController extends Controller
             'descripcion' => 'nullable|string',
             'fecha_limite' => 'nullable|date',
             'id_prioridad' => 'nullable|exists:Prioridad,id',
+            'id_estado' => 'nullable|exists:Estado,id',
         ]);
 
         // Actualizar los campos
@@ -105,6 +108,7 @@ class TareaController extends Controller
         $tarea->desc_tarea = $request->descripcion;
         $tarea->fecha_limite = $request->fecha_limite;
         $tarea->id_prioridad = $request->id_prioridad ?? $tarea->id_prioridad;
+        $tarea->id_estado = $request->id_estado ?? $tarea->id_estado;
         $tarea->save();
 
         // Redirigir al proyecto con mensaje de éxito
