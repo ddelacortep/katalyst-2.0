@@ -166,6 +166,52 @@
                         </div>
                     </form>
                 </x-targeta>
+
+                <!-- x-targeta para EDITAR tarea -->
+                <x-targeta id="editarTareaModal" title="Editar Tarea"
+                    text="Modificar tarea" height="h-auto" width="w-[750px]" padding="p-6">
+                    <h2 class='text-white mb-4'>Editar información de la tarea</h2>
+                    <form method="POST" action="" id="editarTareaForm">
+                        @csrf
+                        @method('PUT')
+                        
+                        <div class="mb-4">
+                            <label class="block text-gray-400 text-sm mb-2">Nombre de la tarea</label>
+                            <input type="text" name="nombre_tarea" id="edit_nombre_tarea"
+                                class="w-full p-3 rounded-lg bg-[#2C2C2C] text-white border border-[#3A3A3A]"
+                                placeholder="Nombre de la tarea" required>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label class="block text-gray-400 text-sm mb-2">Descripción</label>
+                            <textarea name="descripcion" id="edit_descripcion" rows="4"
+                                class="w-full p-3 rounded-lg bg-[#2C2C2C] text-white border border-[#3A3A3A]"
+                                placeholder="Descripción de la tarea"></textarea>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label class="block text-gray-400 text-sm mb-2">Fecha límite</label>
+                            <input type="date" name="fecha_limite" id="edit_fecha_limite"
+                                class="w-full p-3 rounded-lg bg-[#2C2C2C] text-white border border-[#3A3A3A]">
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label class="block text-gray-400 text-sm mb-2">Prioridad</label>
+                            <select name="id_prioridad" id="edit_id_prioridad"
+                                class="w-full p-3 rounded-lg bg-[#2C2C2C] text-white border border-[#3A3A3A]">
+                                @foreach($prioridad as $prior)
+                                    <option value="{{ $prior->id }}">{{ $prior->nombre_prioridad }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div class="flex justify-end mt-6">
+                            <x-botones text="Actualizar" type="submit" color="#191919" text_color="#fff"
+                                size="sm" height="small" border_color="#3A3A3A">
+                            </x-botones>
+                        </div>
+                    </form>
+                </x-targeta>
             </div>
         </div>
     </div>

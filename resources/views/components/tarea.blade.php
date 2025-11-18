@@ -19,7 +19,13 @@
     <div class="flex justify-end">
         <x-botones text="Edit" type="button" color="#191919" text_color="#fff" size="sm" height="small"
             border_color="#3A3A3A" margin_right="mr-2"
-            onclick="window.location.href='{{ route('tareas.edit', $tarea->id) }}'">
+            onclick="openEditarTareaModal(
+                {{ $tarea->id }}, 
+                '{{ addslashes($tarea->nombre_tarea ?? '') }}', 
+                '{{ addslashes($tarea->desc_tarea ?? '') }}', 
+                '{{ $tarea->fecha_limite ?? '' }}', 
+                {{ $tarea->id_prioridad ?? 1 }}
+            )">
         </x-botones>
         <x-botones text="Delete" type="submit" color="#ff0000" text_color="#fff" size="sm" height="small"
             border_color="#3A3A3A">
