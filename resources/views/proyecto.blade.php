@@ -155,7 +155,7 @@
 
                 <div class="w-full mt-2 border-2 border-gray-700 rounded-[10px] p-4 mr-2 overflow-y-auto max-h-[74vh]">
                     @if (isset($tareas) && $tareas->count() > 0)
-                        @foreach ($tareas->chunk(2) as $tareaFila)
+                        @foreach ($tareas->chunk(3) as $tareaFila)
                             <div class="flex flex-row gap-4 mb-4">
                                 @foreach ($tareaFila as $tarea)
                                     <div class="bg-gray-800 rounded-lg p-4 flex-1">
