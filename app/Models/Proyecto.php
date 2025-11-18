@@ -24,9 +24,14 @@ class Proyecto extends Model
         return $this->belongsTo(Participa::class, 'id_proyecto');
     }
 
+    public function usuario(){
+        return $this->belongsToMany(Usuario::class, 'id');
+    }
+
     protected $fillable = [
         'nombre_proyecto',
-        'favorito'
+        'favorito',
+        'id_usuario'
     ];
 
     protected $casts = [
