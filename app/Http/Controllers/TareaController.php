@@ -93,6 +93,23 @@ class TareaController extends Controller
     public function update(Request $request, Tarea $tarea)
     {
         //
+        $validated = $request->validate([
+            'nombre_tarea' => 'required|string|max:255',
+            'descripcion' => 'nullable|string',
+            'fecha_limite' => 'nullable|date',
+            'id_prioridad' => 'nullable|exists:Prioridad,id',
+        ]);
+
+        // Actualizar los campos
+        $tarea->nombre_tarea = $request->nombre_tarea;
+        $tarea->desc_tarea = $request->descripcion;
+        $tarea->fecha_limite = $request->fecha_limite;
+        $tarea->id_prioridad = $request->id_prioridad ?? $tarea->id_prioridad;
+        $tarea->save();
+
+        // Redirigir al proyecto con mensaje de éxito
+        return redirect()->route('proyecto.show', $tarea->id_proyecto)
+            ->with('success', 'Tarea actualizada exitosamente.');
     }
 
     /**

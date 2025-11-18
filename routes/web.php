@@ -59,3 +59,6 @@ Route::get('/proyecto/{id}', [ProyectoController::class, 'show'])
 Route::get('/proyecto/{id}', [ProyectoController::class, 'show'])->name('proyecto.show');
 
 Route::get('/tareas/{id}/edit', [TareaController::class, 'edit'])->name('tareas.edit');
+
+Route::put('/tareas/{tarea}', [TareaController::class, 'update'])->name('tareas.update');
+
