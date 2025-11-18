@@ -9,7 +9,8 @@ class Tarea extends Model
     //
     protected $table = 'Tarea';
 
-    // private $primaryKey = 'id';
+    protected $primaryKey = 'id';
+
     public $timestamps = false;
 
     public $incrementing = true;

@@ -117,10 +117,11 @@ class TareaController extends Controller
      */
     public function destroy(Tarea $tarea)
     {
-        $idProyecto = $tarea->id_proyecto; // Obtener el id del proyecto relacionado
+        $idProyecto = $tarea->id_proyecto;
+    
         $tarea->delete();                  // Eliminar la tarea
 
-        return redirect()->route('proyecto.show', ['id' => $idProyecto])
+        return redirect()->route('proyecto.show', $idProyecto)
             ->with('success', 'Tarea eliminada exitosamente.');
     }
 }

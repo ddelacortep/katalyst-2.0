@@ -47,7 +47,7 @@ Route::post('/proyecto/guardar', [ProyectoController::class, 'store'])
 Route::post('/tareas/guardar', [TareaController::class, 'store'])
     ->name('tareas.store');
 
-Route::delete('/tareas/{id}', [TareaController::class, 'destroy'])
+Route::delete('/tareas/{tarea}', [TareaController::class, 'destroy'])
     ->name('tareas.destroy');
 
 Route::get('/proyecto', [ProyectoController::class, 'index'])
