@@ -15,7 +15,7 @@ class ProyectoController extends Controller
      */
     public function index()
     {
-        //
+
         $proyectos = Proyecto::all();
         $estados = Estado::all(); // ← Añadir esto
         $prioridad = Prioridad::all(); // ← Añadir esto
@@ -96,6 +96,8 @@ class ProyectoController extends Controller
      */
     public function destroy(Proyecto $proyecto)
     {
-        //
+        $proyecto->delete();
+
+        return redirect('/proyecto');
     }
 }
