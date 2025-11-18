@@ -24,8 +24,13 @@
     'height' => 'h-[calc(100vh-156px)]',
 ])
 
+<style>
+@media (max-width: 700px) {
+    .fixedbar-hide-700 { display: none !important; }
+}
+</style>
 <div
-    class="flex flex-col items-center justify-between {{ $height }} {{ $width }} {{ $bg }} {{ $marginBottom }} {{ $marginRight }} {{ $rounded }} {{ $padding }} {{ $marginLeft }}">
+        class="fixedbar-hide-700 flex flex-col items-center justify-between {{ $height }} {{ $width }} {{ $bg }} {{ $marginBottom }} {{ $marginRight }} {{ $rounded }} {{ $padding }} {{ $marginLeft }}">
     <div class="flex flex-col items-center pt-8" style="gap: 40px;" {{ $rounded }}>
         {{-- Aqui un bucle para la carpeta de fixedbar_icons para sacar todas las IMAGENES GUARDADAS en $iconosArriba --}}
         @foreach ($iconosArriba as $item)

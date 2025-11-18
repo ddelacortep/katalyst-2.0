@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="bg-[#222222] min-h-screen flex items-center justify-center p-4">
+<div class="bg-[#111111] min-h-screen flex items-center justify-center p-4">
     <div class="flex items-center justify-between gap-20 max-w-6xl w-full">
         <!-- Formulario de registro -->
         <div class="w-96">

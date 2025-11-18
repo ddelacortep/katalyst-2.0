@@ -16,7 +16,42 @@
             </div>
 
             {{-- ⚠️⚠️ Esto tiene que ser cambiado por un componente real de gestion de proyectos (DaniDLC) ⚠️⚠️ --}}
-            <div class="bg-transparent ml-[6px] mb-[6px] flex flex-col min-h-0 h-auto">
+            <style>
+            @media (max-width: 700px) {
+                .projectbar-hide-700 { display: none !important; }
+                .hamburger-btn { display: block !important; }
+            }
+            @media (min-width: 700px) {
+                .hamburger-btn { display: none !important; }
+            }
+            </style>
+            <button class="hamburger-btn fixed top-4 left-4 z-50 bg-[#191919] p-2 rounded-md" onclick="document.querySelector('.projectbar-list-mobile').style.display = (document.querySelector('.projectbar-list-mobile').style.display === 'block' ? 'none' : 'block')">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+            </button>
+            <div class="projectbar-list-mobile" style="display:none; position:fixed; top:0; left:0; z-index:40; width:70vw; height:100vh; max-width:300px; box-shadow:2px 0 8px #000; background:#191919;">
+                <div class="flex flex-col items-center space-y-3 mt-8">
+                    @if (isset($proyectos) && $proyectos->count() > 0)
+                        @foreach ($proyectos as $proyecto)
+                            <x-proyectos height="h-[60px]" width="w-[170px]" padding="p-3"
+                                class="@if (isset($proyectoSeleccionado) && $proyectoSeleccionado->id == $proyecto->id) border-blue-500 border-4 @endif"
+                                onclick="window.location.href='{{ route('proyecto.show', $proyecto->id) }}'">
+                                <div class="w-full flex items-center justify-center px-2">
+                                    <h2 class="text-white font-semibold text-sm truncate max-w-full">
+                                        {{ $proyecto->nombre_proyecto }}
+                                    </h2>
+                                </div>
+                            </x-proyectos>
+                        @endforeach
+                    @else
+                        <div class="text-gray-500 text-center py-8">
+                            <p>No hay proyectos aún</p>
+                            <p class="text-sm mt-2">Crea tu primer proyecto</p>
+                        </div>
+                    @endif
+                </div>
+            </div>
+
+            <div class="projectbar-desktop bg-transparent ml-[6px] mb-[6px] flex flex-col min-h-0 h-auto" style="display:block;">
                 <x-gestionproyecto marginBottom="border-b-4" height="h-[calc(100vh-152px)]">
                     <div class="flex-shrink-0 grid grid-cols-2 gap-4 flex items-center">
                         <h2 class="text-2xl font-semibold text-[#fff] flex items-center justify-center">Inicio</h2>
@@ -35,7 +70,6 @@
                                     <x-proyectos height="h-[60px]" width="w-[170px]" padding="p-3"
                                         class="@if (isset($proyectoSeleccionado) && $proyectoSeleccionado->id == $proyecto->id) border-blue-500 border-4 @endif"
                                         onclick="window.location.href='{{ route('proyecto.show', $proyecto->id) }}'">
-
                                         <div class="w-full flex items-center justify-center px-2">
                                             <h2 class="text-white font-semibold text-sm truncate max-w-full">
                                                 {{ $proyecto->nombre_proyecto }}
