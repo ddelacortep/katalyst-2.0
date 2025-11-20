@@ -78,4 +78,9 @@ INSERT INTO "Estado" ("nombre_estado") VALUES
 INSERT INTO "Prioridad" ("nombre_prioridad") VALUES
 ('Baja'),
 ('Media'),
-('Alta')
+('Alta');
+
+INSERT INTO "Rol" ("nombre_rol") VALUES
+('Admin'),
+('Editor'),
+('Visor')

@@ -14,6 +14,12 @@ class Participa extends Model
 
     public $incrementing = false;
 
+    protected $fillable = [
+        'id_usuario',
+        'id_rol',
+        'id_proyecto'
+    ];
+
     public function rol()
     {
         return $this->hasOne(Rol::class, 'id');

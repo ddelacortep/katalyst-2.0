@@ -290,6 +290,49 @@
                         </div>
                     </form>
                 </x-targeta>
+
+                <!-- x-targeta para INVITAR usuarios -->
+                @if(isset($proyectoSeleccionado) && $proyectoSeleccionado)
+                    <x-targeta id="invitarModal" title="Invitar Colaboradores"
+                        text="Invitar usuarios" height="h-auto" width="w-[750px]" padding="p-6">
+                        <h2 class='text-white mb-4'>Agregar colaborador al proyecto</h2>
+                        <form method="POST" action="{{ route('proyecto.invitar.store', $proyectoSeleccionado->id) }}" id="invitarForm">
+                            @csrf
+                            <input type="hidden" name="id_proyecto" value="{{ $proyectoSeleccionado->id }}">
+                            
+                            <div class="mb-4">
+                                <label class="block text-gray-400 text-sm mb-2">Usuario</label>
+                                <x-colaboradores :usuario="$usuario" />
+                            </div>
+                            
+                            <div class="mb-4">
+                                <label class="block text-gray-400 text-sm mb-2">Rol</label>
+                                <x-roles :rol="$rol" />
+                            </div>
+
+                            <div class="mb-6">
+                                <h3 class="text-white font-semibold mb-3">Colaboradores actuales:</h3>
+                                <div class="max-h-[200px] overflow-y-auto space-y-2">
+                                    <div class="flex justify-between items-center bg-[#1a1a1a] p-3 rounded-lg border border-[#3A3A3A]">
+                                        <div>
+                                            <span class="text-white"></span>
+                                            <span class="text-gray-400 text-sm ml-2">(Colaborador)</span>
+                                        </div>
+                                        <button type="button" class="text-red-500 hover:text-red-700 text-sm">
+                                            Eliminar
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="flex justify-end mt-6">
+                                <x-botones text="Invitar" type="submit" color="#191919" text_color="#fff"
+                                    size="sm" height="small" border_color="#3A3A3A">
+                                </x-botones>
+                            </div>
+                        </form>
+                    </x-targeta>
+                @endif
             </div>
         </div>
     </div>
