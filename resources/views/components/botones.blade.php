@@ -18,6 +18,7 @@
             <img src="{{ asset($img) }}" alt="icon" class="w-5 h-5">
         @endif
         {{ $text }}
+        {{ $slot }}
     </a>
 @else
     <button type="{{ $type }}" @if ($onclick) onclick="{{ $onclick }}" @endif
@@ -26,5 +27,6 @@
             <img src="{{ asset($img) }}" alt="icon" class="w-5 h-5">
         @endif
         {{ $text }}
+        {{ $slot }}
     </button>
 @endif
