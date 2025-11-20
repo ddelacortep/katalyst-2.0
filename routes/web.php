@@ -28,6 +28,13 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/tareas/{tarea}', [TareaController::class, 'update'])->name('tareas.update');
 
     Route::delete('/proyecto/{proyecto}', [ProyectoController::class, 'destroy'])->name('proyecto.destroy');
+
+    // Rutas de invitaciones a proyectos
+    Route::post('/proyecto/{id}/invitar', [ProyectoController::class, 'invitar'])
+        ->name('proyecto.invitar.store');
+    
+    Route::delete('/proyecto/{proyectoId}/colaborador/{usuarioId}', [ProyectoController::class, 'eliminarColaborador'])
+        ->name('proyecto.colaborador.eliminar');
 });
 
 Route::get('/', function () {

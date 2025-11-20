@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Estado;
+use App\Models\Participa;
 use App\Models\Prioridad;
 use App\Models\Proyecto;
+use App\Models\Rol;
 use App\Models\Tarea;
+use App\Models\Usuario;
 use Illuminate\Http\Request;
 
 class ProyectoController extends Controller
@@ -15,14 +18,27 @@ class ProyectoController extends Controller
      */
     public function index()
     {
+        // Proyectos donde el usuario es propietario
+        $proyectosPropios = Proyecto::where('id_usuario', auth()->id())->get();
+        
+        // Proyectos donde el usuario es colaborador
+        $idsProyectosColaborador = Participa::where('id_usuario', auth()->id())
+            ->pluck('id_proyecto')
+            ->toArray();
+        
+        $proyectosColaborador = Proyecto::whereIn('id', $idsProyectosColaborador)->get();
+        
+        // Combinar ambos (propios + colaborador)
+        $proyectos = $proyectosPropios->merge($proyectosColaborador)->unique('id');
+        
+        $estados = Estado::all();
+        $prioridad = Prioridad::all();
+        $proyectoSeleccionado = null;
+        $tareas = collect();
+        $usuario = Usuario::all();
+        $rol = Rol::all();
 
-        $proyectos = Proyecto::where('id_usuario', auth()->id())->get();
-        $estados = Estado::all(); // ← Añadir esto
-        $prioridad = Prioridad::all(); // ← Añadir esto
-        $proyectoSeleccionado = null; // No hay proyecto seleccionado en la vista inicial
-        $tareas = collect(); // Colección vacía de tareas
-
-        return view('proyecto', compact('proyectos', 'estados', 'prioridad', 'proyectoSeleccionado', 'tareas'));
+        return view('proyecto', compact('proyectos', 'estados', 'prioridad', 'proyectoSeleccionado', 'tareas', 'usuario', 'rol'));
 
     }
 
@@ -68,6 +84,19 @@ class ProyectoController extends Controller
         $tareas = $proyectoSeleccionado ? Tarea::where('id_proyecto', $proyectoSeleccionado->id)->get() : collect();
         $estados = Estado::all();
         $prioridad = Prioridad::all();
+        
+        // Datos para el modal de invitación
+        // 1. Obtener IDs de usuarios que ya participan en el proyecto
+        $usuariosEnProyecto = Participa::where('id_proyecto', $proyectoSeleccionado->id)
+            ->pluck('id_usuario')
+            ->toArray();
+        
+        // 2. Agregar al propietario del proyecto a la lista de exclusión
+        $usuariosEnProyecto[] = $proyectoSeleccionado->id_usuario;
+        
+        // 3. Filtrar usuarios: mostrar solo los que NO están en el proyecto
+        $usuario = Usuario::whereNotIn('id', $usuariosEnProyecto)->get();
+        $rol = Rol::all();
 
         return view('proyecto', compact(
             'proyectos',
@@ -75,8 +104,9 @@ class ProyectoController extends Controller
             'tareas',
             'estados',
             'prioridad',
+            'usuario',
+            'rol',
         ));
-
     }
 
     /**
@@ -100,9 +130,6 @@ class ProyectoController extends Controller
      */
     public function destroy(Proyecto $proyecto)
     {
-        if ($proyecto->id_usuario !== auth()->id()) {
-            abort(403, 'No tienes permiso para eliminar este proyecto.');
-        }
         $proyecto->delete();
 
         return redirect('/proyecto');
