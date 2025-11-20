@@ -71,3 +71,5 @@ Route::post('/register', [RegisterController::class, 'register'])
 
 
 
+Route::get('tareas', [TareaController::class, 'index'])->name('tareas.index');
+
