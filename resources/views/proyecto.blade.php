@@ -172,6 +172,36 @@
                                             height="auto" :estados="$estados" :tarea="$tarea" bg="transparent" />
                                     </div>
                                 @endforeach
+                                @if(session('status'))
+                                    <div id="toast-status" class="fixed bottom-4 right-4 z-50 opacity-0 transition-opacity duration-500 ease-in-out pointer-events-none">
+                                        <x-botones
+                                            text="{{ session('status') }}"
+                                            type="button"
+                                            color="#191919"
+                                            text_color="#fff"
+                                            size="sm"
+                                            height="small"
+                                            border_color="#3A3A3A"
+                                        />
+                                    </div>
+                                    <script>
+                                        document.addEventListener('DOMContentLoaded', function () {
+                                            const toast = document.getElementById('toast-status');
+                                            if (toast) {
+                                                requestAnimationFrame(() => {
+                                                    toast.classList.remove('opacity-0');
+                                                    toast.classList.add('opacity-100');
+                                                });
+                                                setTimeout(() => {
+                                                    toast.classList.remove('opacity-100');
+                                                    toast.classList.add('opacity-0');
+                                                    setTimeout(() => { toast.remove(); }, 500);
+                                                }, 5000);
+                                            }
+                                        });
+                                    </script>
+                                @endif
+
                             </div>
                         @endforeach
                     @elseif(isset($proyectoSeleccionado))
