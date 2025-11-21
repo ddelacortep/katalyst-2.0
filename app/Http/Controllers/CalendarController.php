@@ -67,6 +67,7 @@ class CalendarController extends Controller
         $task->save();
 
 
-        return view('proyecto', ['calendar_url' => $url]);
+        return redirect()->route('proyecto.show', $task->id_proyecto)
+            ->with('status', 'Evento creado en Google Calendar');
     }
 }
