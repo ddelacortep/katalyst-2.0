@@ -16,8 +16,23 @@
     </script>
 </head>
 
+<script>
+window.addEventListener('pageshow', function(e) {
+    if (e.persisted) {
+        window.location.reload();
+    }
+});
+</script>
+
 <body class="bg-[#111111] h-screen overflow-hidden">
     @yield('content')
+    <script>
+    window.addEventListener('pageshow', function(e) {
+        if (e.persisted) {
+            window.location.reload();
+        }
+    });
+    </script>
 </body>
 
 </html>

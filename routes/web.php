@@ -9,7 +9,7 @@ use App\Http\Controllers\ProyectoController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\GoogleAuthController;
 
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth', 'prevent-back-history'])->group(function () {
     Route::get('/proyecto', [ProyectoController::class, 'index'])
         ->name('proyecto');
 
