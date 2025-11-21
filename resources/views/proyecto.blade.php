@@ -131,6 +131,27 @@
                                             :estados="$estados" :tarea="$tarea" bg="transparent" />
                                     </div>
                                 @endforeach
+                                @if(session('status'))
+    <div class="alert alert-success">{{ session('status') }}</div>
+@endif
+
+@foreach($tareaFila as $task)
+    <div class="task">
+        <h3>{{ $task->title }}</h3>
+        <p>{{ $task->description }}</p>
+        <p>Inicio: {{ $task->start_at }} — Fin: {{ $task->end_at }}</p>
+
+        @if(!$task->google_event_id)
+            <form class="text-gray-400 text-sm" action="{{ route('tasks.push-to-calendar', $task) }}" method="POST" style="display:inline">
+                @csrf
+                <button class="text-gray-400 text-sm" type="submit">Guardar en mi Google Calendar</button>
+            </form>
+        @else
+            <a class="text-gray-400 text-sm" href="{{ $task->calendar_url }}" target="_blank">Ver en Google Calendar</a>
+        @endif
+    </div>
+@endforeach
+
                             </div>
                         @endforeach
                     @elseif(isset($proyectoSeleccionado))
