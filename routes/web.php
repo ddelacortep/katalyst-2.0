@@ -52,7 +52,9 @@ Route::get('/register', function () {
 })->name('register');
 
 Route::get('/prueba', function () {
-    return view('prueba');
+    return view('prueba', [
+        'tasks' => collect(),
+    ]);
 })->name('prueba');
 
 Route::get('/login', [LoginController::class, 'showLoginForm'])

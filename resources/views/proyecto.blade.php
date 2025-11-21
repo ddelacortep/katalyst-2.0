@@ -132,25 +132,34 @@
                                     </div>
                                 @endforeach
                                 @if(session('status'))
-    <div class="alert alert-success">{{ session('status') }}</div>
-@endif
-
-@foreach($tareaFila as $task)
-    <div class="task">
-        <h3>{{ $task->title }}</h3>
-        <p>{{ $task->description }}</p>
-        <p>Inicio: {{ $task->start_at }} — Fin: {{ $task->end_at }}</p>
-
-        @if(!$task->google_event_id)
-            <form class="text-gray-400 text-sm" action="{{ route('tasks.push-to-calendar', $task) }}" method="POST" style="display:inline">
-                @csrf
-                <button class="text-gray-400 text-sm" type="submit">Guardar en mi Google Calendar</button>
-            </form>
-        @else
-            <a class="text-gray-400 text-sm" href="{{ $task->calendar_url }}" target="_blank">Ver en Google Calendar</a>
-        @endif
-    </div>
-@endforeach
+                                    <div id="toast-status" class="fixed bottom-4 right-4 z-50 opacity-0 transition-opacity duration-500 ease-in-out pointer-events-none">
+                                        <x-botones
+                                            text="{{ session('status') }}"
+                                            type="button"
+                                            color="#191919"
+                                            text_color="#fff"
+                                            size="sm"
+                                            height="small"
+                                            border_color="#3A3A3A"
+                                        />
+                                    </div>
+                                    <script>
+                                        document.addEventListener('DOMContentLoaded', function () {
+                                            const toast = document.getElementById('toast-status');
+                                            if (toast) {
+                                                requestAnimationFrame(() => {
+                                                    toast.classList.remove('opacity-0');
+                                                    toast.classList.add('opacity-100');
+                                                });
+                                                setTimeout(() => {
+                                                    toast.classList.remove('opacity-100');
+                                                    toast.classList.add('opacity-0');
+                                                    setTimeout(() => { toast.remove(); }, 500);
+                                                }, 5000);
+                                            }
+                                        });
+                                    </script>
+                                @endif
 
                             </div>
                         @endforeach
