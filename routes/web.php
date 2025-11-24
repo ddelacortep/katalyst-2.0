@@ -31,12 +31,12 @@ Route::middleware(['auth', 'prevent-back-history'])->group(function () {
 
     Route::delete('/proyecto/{proyecto}', [ProyectoController::class, 'destroy'])->name('proyecto.destroy');
 
-    // Rutas de invitaciones a proyectos
-    Route::post('/proyecto/{id}/invitar', [ProyectoController::class, 'invitar'])
-        ->name('proyecto.invitar.store');
+    // Rutas de invitaciones a proyectos - Gestionadas por ParticipaController
+    Route::post('/participa/invitar', [App\Http\Controllers\ParticipaController::class, 'store'])
+        ->name('participa.store');
     
-    Route::delete('/proyecto/{proyectoId}/colaborador/{usuarioId}', [ProyectoController::class, 'eliminarColaborador'])
-        ->name('proyecto.colaborador.eliminar');
+    Route::delete('/participa/{proyectoId}/{usuarioId}', [App\Http\Controllers\ParticipaController::class, 'destroy'])
+        ->name('participa.destroy');
 });
 
 Route::get('/', function () {

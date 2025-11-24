@@ -1,6 +1,29 @@
 @extends('layouts.app')
 
 @section('content')
+    {{-- Mensajes de éxito y error --}}
+    @if(session('success'))
+        <div class="fixed top-20 right-4 z-50 bg-green-600 text-white px-6 py-3 rounded-lg shadow-lg">
+            {{ session('success') }}
+        </div>
+        <script>
+            setTimeout(() => {
+                document.querySelector('.bg-green-600').remove();
+            }, 5000);
+        </script>
+    @endif
+
+    @if(session('error'))
+        <div class="fixed top-20 right-4 z-50 bg-red-600 text-white px-6 py-3 rounded-lg shadow-lg">
+            {{ session('error') }}
+        </div>
+        <script>
+            setTimeout(() => {
+                document.querySelector('.bg-red-600').remove();
+            }, 5000);
+        </script>
+    @endif
+
     {{-- Contenedor principal con flexbox --}}
     <div class="flex flex-col h-screen">
 
@@ -133,6 +156,10 @@
                     </div>
                     <div class="flex justify-end items-start gap-2">
                         @if (isset($proyectoSeleccionado) && $proyectoSeleccionado)
+                            <x-botones onclick="openModal('invitarModal')" img="images/fixedbar_icons/user_mas.svg" type="button" color="#191919"
+                                text_color="#fff" size="sm" height="small" border_color="#3A3A3A"
+                                marginRight="mr-5">
+                            </x-botones> 
                             <x-botones onclick="openModal('tareaModal')" text="+ Tarea" type="button" color="#191919"
                                 text_color="#fff" size="sm" height="small" border_color="#3A3A3A"
                                 marginRight="mr-5">
@@ -323,36 +350,31 @@
 
                 <!-- x-targeta para INVITAR usuarios -->
                 @if(isset($proyectoSeleccionado) && $proyectoSeleccionado)
-                    <x-targeta id="invitarModal" title="Invitar Colaboradores"
-                        text="Invitar usuarios" height="h-auto" width="w-[750px]" padding="p-6">
-                        <h2 class='text-white mb-4'>Agregar colaborador al proyecto</h2>
-                        <form method="POST" action="{{ route('proyecto.invitar.store', $proyectoSeleccionado->id) }}" id="invitarForm">
+                    <x-targeta id="invitarModal" title="Invitar Colaborador" text="Invitar" height="h-auto" width="w-[750px]" padding="p-6">
+                        <h2 class='text-white mb-4'>Información del colaborador</h2>
+                        <form method="POST" action="{{ route('participa.store') }}">
                             @csrf
                             <input type="hidden" name="id_proyecto" value="{{ $proyectoSeleccionado->id }}">
                             
                             <div class="mb-4">
-                                <label class="block text-gray-400 text-sm mb-2">Usuario</label>
-                                <x-colaboradores :usuario="$usuario" />
+                                <label class="block text-gray-400 text-sm mb-2">Buscar usuario</label>
+                                <input list="usuarios" name="id_usuario" 
+                                    class="w-full p-3 rounded-lg bg-[#2C2C2C] text-white border border-[#3A3A3A]"
+                                    placeholder="Escribe el nombre del usuario" required>
+                                <datalist id="usuarios">
+                                    @foreach($usuario as $u)
+                                        <option value="{{ $u->nombre_usuario }}">{{ $u->correo }}</option>
+                                    @endforeach
+                                </datalist>
                             </div>
                             
                             <div class="mb-4">
                                 <label class="block text-gray-400 text-sm mb-2">Rol</label>
-                                <x-roles :rol="$rol" />
-                            </div>
-
-                            <div class="mb-6">
-                                <h3 class="text-white font-semibold mb-3">Colaboradores actuales:</h3>
-                                <div class="max-h-[200px] overflow-y-auto space-y-2">
-                                    <div class="flex justify-between items-center bg-[#1a1a1a] p-3 rounded-lg border border-[#3A3A3A]">
-                                        <div>
-                                            <span class="text-white"></span>
-                                            <span class="text-gray-400 text-sm ml-2">(Colaborador)</span>
-                                        </div>
-                                        <button type="button" class="text-red-500 hover:text-red-700 text-sm">
-                                            Eliminar
-                                        </button>
-                                    </div>
-                                </div>
+                                <select name="id_rol" class="w-full p-3 rounded-lg bg-[#2C2C2C] text-white border border-[#3A3A3A]" required>
+                                    @foreach($rol as $r)
+                                        <option value="{{ $r->id }}">{{ $r->nombre_rol }}</option>
+                                    @endforeach
+                                </select>
                             </div>
                             
                             <div class="flex justify-end mt-6">
