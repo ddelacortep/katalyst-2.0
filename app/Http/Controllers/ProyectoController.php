@@ -75,13 +75,30 @@ class ProyectoController extends Controller
      */
     public function show($id)
     {
-        //
-        $proyectos = Proyecto::where('id_usuario', auth()->id())->get();
-        $proyectoSeleccionado = Proyecto::where('id_usuario', auth()->id())->find($id);
+        // Obtener todos los proyectos del usuario (propios + colaborador)
+        $proyectosPropios = Proyecto::where('id_usuario', auth()->id())->get();
+        $idsProyectosColaborador = Participa::where('id_usuario', auth()->id())
+            ->pluck('id_proyecto')
+            ->toArray();
+        $proyectosColaborador = Proyecto::whereIn('id', $idsProyectosColaborador)->get();
+        $proyectos = $proyectosPropios->merge($proyectosColaborador)->unique('id');
+        
+        // Buscar el proyecto sin filtrar por usuario
+        $proyectoSeleccionado = Proyecto::find($id);
+        
         if (!$proyectoSeleccionado) {
+            abort(404, 'Proyecto no encontrado.');
+        }
+        
+        // Verificar acceso: debe ser propietario O colaborador
+        $esPropiedad = ((int)$proyectoSeleccionado->id_usuario === (int)auth()->id());
+        $esColaborador = in_array((int)$id, $idsProyectosColaborador);
+        
+        if (!$esPropiedad && !$esColaborador) {
             abort(403, 'No tienes permiso para ver este proyecto.');
         }
-        $tareas = $proyectoSeleccionado ? Tarea::where('id_proyecto', $proyectoSeleccionado->id)->get() : collect();
+        
+        $tareas = Tarea::where('id_proyecto', $proyectoSeleccionado->id)->get();
         $estados = Estado::all();
         $prioridad = Prioridad::all();
         
@@ -130,8 +147,20 @@ class ProyectoController extends Controller
      */
     public function destroy(Proyecto $proyecto)
     {
+        // Verificar que el usuario es el propietario
+        if ((int)$proyecto->id_usuario !== (int)auth()->id()) {
+            return redirect()->back()->with('error', 'Solo el propietario puede eliminar el proyecto.');
+        }
+
+        // Eliminar primero todas las participaciones del proyecto
+        Participa::where('id_proyecto', $proyecto->id)->delete();
+        
+        // Eliminar todas las tareas del proyecto
+        Tarea::where('id_proyecto', $proyecto->id)->delete();
+        
+        // Ahora eliminar el proyecto
         $proyecto->delete();
 
-        return redirect('/proyecto');
+        return redirect('/proyecto')->with('success', 'Proyecto eliminado correctamente.');
     }
 }
