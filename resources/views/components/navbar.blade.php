@@ -1,29 +1,47 @@
 @props([
-    'logo' => 'images/logo.svg', // Guardar la ruta que sino el sistema no se entera de na
+    'logo' => 'images/logo.svg',
     'alturalogo' => 'h-20',
     'fondoinput' => 'Buscar proyecto...',
 ])
 
-<div class="grid grid-cols-12 gap-6 mt-[30px] mb-[30px] px-[90px]">
-    {{-- Logo para que ocupe solo las columnas 1 y 2 --}}
+<div class="grid grid-cols-12 gap-2 mt-[30px] mb-[30px] px-[40px]">
+
+    {{-- Logo --}}
     <div class="col-span-2 flex items-center justify-start">
         <img src="{{ asset($logo) }}" alt="Logo" class="{{ $alturalogo }}">
     </div>
 
-    {{-- Input para que sea lo mas ancho posible (Columnas 3 a 10) --}}
+    {{-- Input + botón en un solo grupo --}}
     <div class="col-span-8 flex items-center justify-center w-full">
-        <x-input name="search" type="text" placeholder="{{ $fondoinput }}" heigth="h-[50px]" width="w-full"
-            padding="p-[10px]" borderRadius="rounded-[10px]" />
+        <div class="flex w-full rounded-[10px] overflow-hidden border border-[#3A3A3A]">
+
+            {{-- BOTÓN pegado al input --}}
+            <button type="submit" class="bg-[#191919] text-white px-4 flex items-center">
+                Buscar
+            </button>
+
+            {{-- INPUT ocupando el resto --}}
+            <x-input 
+                name="search" 
+                type="text" 
+                placeholder="{{ $fondoinput }}"
+                heigth="h-[50px]"
+                width="w-full"
+                padding="p-[10px]"
+                borderRadius="rounded-none" 
+            />
+        </div>
     </div>
+
 </div>
 
-{{-- ⚠️⚠️ Imagen de logout DE PRUEBA ⚠️⚠️ (Columnas 11 y 12) --}}
+{{-- Usuario + logout --}}
 <div class="col-span-1 flex items-center justify-end gap-1">
-
     @if(Auth::check())
         <span class="text-white font-semibold text-base">{{ Auth::user()->nombre_usuario }}</span>
     @endif
 </div>
+
 <div class="col-span-1 flex items-center justify-end gap-1">
     <form method="POST" action="{{ route('logout') }}">
         @csrf

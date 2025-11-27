@@ -13,7 +13,8 @@ ALTER TABLE
 CREATE TABLE "Proyecto"(
     "id" BIGINT IDENTITY(1,1) NOT NULL,
     "nombre_proyecto" VARCHAR(255) NOT NULL,
-    "favorito" BINARY(16) NULL
+    "favorito" BINARY(16) NULL,
+    "id_usuario" BIGINT NOT NULL
 );
 ALTER TABLE
     "Proyecto" ADD CONSTRAINT "proyecto_id_primary" PRIMARY KEY("id");
@@ -77,4 +78,9 @@ INSERT INTO "Estado" ("nombre_estado") VALUES
 INSERT INTO "Prioridad" ("nombre_prioridad") VALUES
 ('Baja'),
 ('Media'),
-('Alta')
+('Alta');
+
+INSERT INTO "Rol" ("nombre_rol") VALUES
+('Admin'),
+('Editor'),
+('Visor')

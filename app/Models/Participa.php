@@ -14,18 +14,24 @@ class Participa extends Model
 
     public $incrementing = false;
 
+    protected $fillable = [
+        'id_usuario',
+        'id_rol',
+        'id_proyecto'
+    ];
+
     public function rol()
     {
-        return $this->hasOne(Rol::class, 'id');
+        return $this->belongsTo(Rol::class, 'id_rol');
     }
 
     public function usuario()
     {
-        return $this->belongsTo(Usuario::class, 'id');
+        return $this->belongsTo(Usuario::class, 'id_usuario');
     }
 
     public function proyecto()
     {
-        return $this->hasMany(Proyecto::class, 'id');
+        return $this->belongsTo(Proyecto::class, 'id_proyecto');
     }
 }

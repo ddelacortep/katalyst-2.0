@@ -11,9 +11,11 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        //
         $middleware->redirectGuestsTo('/login');
-    })
+        $middleware->alias([
+            'prevent-back-history' => \App\Http\Controllers\Middleware\PreventBackHistory::class,
+        ]);
+    })    
     ->withExceptions(function (Exceptions $exceptions): void {
         //
     })->create();

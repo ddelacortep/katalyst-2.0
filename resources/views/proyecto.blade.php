@@ -1,6 +1,29 @@
 @extends('layouts.app')
 
 @section('content')
+    {{-- Mensajes de éxito y error --}}
+    @if(session('success'))
+        <div class="fixed top-20 right-4 z-50 bg-green-600 text-white px-6 py-3 rounded-lg shadow-lg">
+            {{ session('success') }}
+        </div>
+        <script>
+            setTimeout(() => {
+                document.querySelector('.bg-green-600').remove();
+            }, 5000);
+        </script>
+    @endif
+
+    @if(session('error'))
+        <div class="fixed top-20 right-4 z-50 bg-red-600 text-white px-6 py-3 rounded-lg shadow-lg">
+            {{ session('error') }}
+        </div>
+        <script>
+            setTimeout(() => {
+                document.querySelector('.bg-red-600').remove();
+            }, 5000);
+        </script>
+    @endif
+
     {{-- Contenedor principal con flexbox --}}
     <div class="flex flex-col h-screen">
 
@@ -16,7 +39,58 @@
             </div>
 
             {{-- ⚠️⚠️ Esto tiene que ser cambiado por un componente real de gestion de proyectos (DaniDLC) ⚠️⚠️ --}}
-            <div class="bg-transparent ml-[6px] mb-[6px] flex flex-col min-h-0 h-auto">
+            <style>
+                @media (max-width: 700px) {
+                    .projectbar-hide-700 {
+                        display: none !important;
+                    }
+
+                    .hamburger-btn {
+                        display: block !important;
+                    }
+                }
+
+                @media (min-width: 700px) {
+                    .hamburger-btn {
+                        display: none !important;
+                    }
+                }
+            </style>
+            <button class="hamburger-btn fixed top-4 left-4 z-50 bg-[#191919] p-2 rounded-md"
+                onclick="document.querySelector('.projectbar-list-mobile').style.display = (document.querySelector('.projectbar-list-mobile').style.display === 'block' ? 'none' : 'block')">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="3" y1="12" x2="21" y2="12" />
+                    <line x1="3" y1="6" x2="21" y2="6" />
+                    <line x1="3" y1="18" x2="21" y2="18" />
+                </svg>
+            </button>
+            <div class="projectbar-list-mobile"
+                style="display:none; position:fixed; top:0; left:0; z-index:40; width:70vw; height:100vh; max-width:300px; box-shadow:2px 0 8px #000; background:#191919;">
+                <div class="flex flex-col items-center space-y-3 mt-8">
+                    @if (isset($proyectos) && $proyectos->count() > 0)
+                        @foreach ($proyectos as $proyecto)
+                            <x-proyectos height="h-[60px]" width="w-[170px]" padding="p-3"
+                                class="@if (isset($proyectoSeleccionado) && $proyectoSeleccionado->id == $proyecto->id) border-blue-500 border-4 @endif"
+                                onclick="window.location.href='{{ route('proyecto.show', $proyecto->id) }}'">
+                                <div class="w-full flex items-center justify-center px-2">
+                                    <h2 class="text-white font-semibold text-sm truncate max-w-full">
+                                        {{ $proyecto->nombre_proyecto }}
+                                    </h2>
+                                </div>
+                            </x-proyectos>
+                        @endforeach
+                    @else
+                        <div class="text-gray-500 text-center py-8">
+                            <p>No hay proyectos aún</p>
+                            <p class="text-sm mt-2">Crea tu primer proyecto</p>
+                        </div>
+                    @endif
+                </div>
+            </div>
+
+            <div class="projectbar-desktop bg-transparent ml-[6px] mb-[6px] flex flex-col min-h-0 h-auto"
+                style="display:block;">
                 <x-gestionproyecto marginBottom="border-b-4" height="h-[calc(100vh-152px)]">
                     <div class="flex-shrink-0 grid grid-cols-2 gap-4 flex items-center">
                         <h2 class="text-2xl font-semibold text-[#fff] flex items-center justify-center">Inicio</h2>
@@ -35,7 +109,6 @@
                                     <x-proyectos height="h-[60px]" width="w-[170px]" padding="p-3"
                                         class="@if (isset($proyectoSeleccionado) && $proyectoSeleccionado->id == $proyecto->id) border-blue-500 border-4 @endif"
                                         onclick="window.location.href='{{ route('proyecto.show', $proyecto->id) }}'">
-
                                         <div class="w-full flex items-center justify-center px-2">
                                             <h2 class="text-white font-semibold text-sm truncate max-w-full">
                                                 {{ $proyecto->nombre_proyecto }}
@@ -92,21 +165,24 @@
                     </div>
                     <div class="flex justify-end items-start gap-2">
                         @if (isset($proyectoSeleccionado) && $proyectoSeleccionado)
-                            <x-botones
-                                onclick="openModal('tareaModal')"
-                                text="+ Tarea" type="button" color="#191919" text_color="#fff" size="sm" height="small"
-                                border_color="#3A3A3A" marginRight="mr-5">
+                            <x-botones onclick="openModal('invitarModal')" img="images/fixedbar_icons/user_mas.svg" type="button" color="#191919"
+                                text_color="#fff" size="sm" height="small" border_color="#3A3A3A"
+                                marginRight="mr-5">
+                            </x-botones> 
+                            <x-botones onclick="openModal('tareaModal')" text="+ Tarea" type="button" color="#191919"
+                                text_color="#fff" size="sm" height="small" border_color="#3A3A3A"
+                                marginRight="mr-5">
                             </x-botones>
-                            <form method="POST" action="{{ route('proyecto.destroy', $proyectoSeleccionado->id) }}" onsubmit="return confirm('¿Seguro que quieres eliminar este proyecto?');">
+                            <form method="POST" action="{{ route('proyecto.destroy', $proyectoSeleccionado->id) }}"
+                                onsubmit="return confirm('¿Seguro que quieres eliminar este proyecto?');">
                                 @csrf
                                 @method('DELETE')
-                                <x-botones text="Eliminar Proyecto" type="submit" color="#ff0000" text_color="#fff" size="sm" height="small" border_color="#3A3A3A" />
+                                <x-botones text="Eliminar Proyecto" type="submit" color="#ff0000" text_color="#fff"
+                                    size="sm" height="small" border_color="#3A3A3A" />
                             </form>
                         @else
-                            <x-botones
-                                onclick="alert('Selecciona un proyecto primero')"
-                                text="+ Tarea" type="button" color="#191919" text_color="#fff" size="sm" height="small"
-                                border_color="#3A3A3A">
+                            <x-botones onclick="alert('Selecciona un proyecto primero')" text="+ Tarea" type="button"
+                                color="#191919" text_color="#fff" size="sm" height="small" border_color="#3A3A3A">
                             </x-botones>
                         @endif
                     </div>
@@ -115,7 +191,7 @@
 
                 <div class="w-full mt-2 border-2 border-gray-700 rounded-[10px] p-4 mr-2 overflow-y-auto max-h-[74vh]">
                     @if (isset($tareas) && $tareas->count() > 0)
-                        @foreach ($tareas->chunk(2) as $tareaFila)
+                        @foreach ($tareas->chunk(3) as $tareaFila)
                             <div class="flex flex-row gap-4 mb-4">
                                 @foreach ($tareaFila as $tarea)
                                     <div class="bg-gray-800 rounded-lg p-4 flex-1">
@@ -123,13 +199,45 @@
                                         <p class="text-gray-300 mb-1">{{ $tarea->desc_tarea }}</p>
                                         <p class="text-gray-400 text-sm">Fecha creación: {{ $tarea->fecha_creacion }}</p>
                                         <p class="text-gray-400 text-sm">Fecha límite: {{ $tarea->fecha_limite }}</p>
-                                        <p class="text-gray-400 text-sm">Prioridad: {{ $tarea->prioridad->nombre_prioridad ?? '' }}</p>
-                                        <p class="text-gray-400 text-sm">Estado: {{ $tarea->estado?->nombre_estado ?? '' }}</p>
+                                        <p class="text-gray-400 text-sm">Prioridad:
+                                            {{ $tarea->prioridad->nombre_prioridad ?? '' }}</p>
+                                        <p class="text-gray-400 text-sm">Estado:
+                                            {{ $tarea->estado?->nombre_estado ?? '' }}</p>
                                         <p class="text-gray-400 text-sm">Usuario: {{ $tarea->nombre_usuario }}</p>
-                                        <x-tarea width="w-full" display="inline-block" justify="justify-center" height="auto"
-                                            :estados="$estados" :tarea="$tarea" bg="transparent" />
+                                        <x-tarea width="w-full" display="inline-block" justify="justify-center"
+                                            height="auto" :estados="$estados" :tarea="$tarea" bg="transparent" />
                                     </div>
                                 @endforeach
+                                @if(session('status'))
+                                    <div id="toast-status" class="fixed bottom-4 right-4 z-50 opacity-0 transition-opacity duration-500 ease-in-out pointer-events-none">
+                                        <x-botones
+                                            text="{{ session('status') }}"
+                                            type="button"
+                                            color="#191919"
+                                            text_color="#fff"
+                                            size="sm"
+                                            height="small"
+                                            border_color="#3A3A3A"
+                                        />
+                                    </div>
+                                    <script>
+                                        document.addEventListener('DOMContentLoaded', function () {
+                                            const toast = document.getElementById('toast-status');
+                                            if (toast) {
+                                                requestAnimationFrame(() => {
+                                                    toast.classList.remove('opacity-0');
+                                                    toast.classList.add('opacity-100');
+                                                });
+                                                setTimeout(() => {
+                                                    toast.classList.remove('opacity-100');
+                                                    toast.classList.add('opacity-0');
+                                                    setTimeout(() => { toast.remove(); }, 500);
+                                                }, 5000);
+                                            }
+                                        });
+                                    </script>
+                                @endif
+
                             </div>
                         @endforeach
                     @elseif(isset($proyectoSeleccionado))
@@ -143,38 +251,38 @@
                         </div>
                     @endif
                 </div>
-                
+
                 <!-- x-targeta para crear tarea -->
-                <x-targeta id="tareaModal"  title="Crear Tarea"
-                    text="Nueva tarea" height="h-auto" width="w-[750px]" padding="p-6">
+                <x-targeta id="tareaModal" title="Crear Tarea" text="Nueva tarea" height="h-auto" width="w-[750px]"
+                    padding="p-6">
                     <h2 class='text-white mb-4'>Información de la tarea</h2>
                     <form method="POST" action="{{ route('tareas.store') }}">
                         @csrf
-                        @if(isset($proyectoSeleccionado) && $proyectoSeleccionado)
+                        @if (isset($proyectoSeleccionado) && $proyectoSeleccionado)
                             <input type="hidden" name="id_proyecto" value="{{ $proyectoSeleccionado->id }}">
                         @endif
-                        
+
                         <div class="mb-4">
                             <label class="block text-gray-400 text-sm mb-2">Nombre de la tarea</label>
                             <input type="text" name="nombre_tarea"
                                 class="w-full p-3 rounded-lg bg-[#2C2C2C] text-white border border-[#3A3A3A]"
                                 placeholder="Nombre de la tarea" required>
                         </div>
-                        
+
                         <div class="mb-4">
                             <label class="block text-gray-400 text-sm mb-2">Descripción</label>
                             <textarea name="descripcion" rows="4"
                                 class="w-full p-3 rounded-lg bg-[#2C2C2C] text-white border border-[#3A3A3A]"
                                 placeholder="Descripción de la tarea"></textarea>
                         </div>
-                        
+
                         <div class="mb-4">
                             <label class="block text-gray-400 text-sm mb-2">Fecha límite</label>
                             <input type="date" name="fecha_limite"
                                 class="w-full p-3 rounded-lg bg-[#2C2C2C] text-white border border-[#3A3A3A]"
                                 min="{{ date('Y-m-d') }}" max="{{ date('Y-m-d', strtotime('+1 year')) }}">
                         </div>
-                        
+
                         <div class="mb-4">
                             <label class="block text-gray-400 text-sm mb-2">Prioridad</label>
                             <x-prioridad :prioridad="$prioridad" />
@@ -186,46 +294,46 @@
                         </div>
 
                         <div class="flex justify-end mt-6">
-                            <x-botones text="Guardar" type="submit" color="#191919" text_color="#fff"
-                                size="sm" height="small" border_color="#3A3A3A">
+                            <x-botones text="Guardar" type="submit" color="#191919" text_color="#fff" size="sm"
+                                height="small" border_color="#3A3A3A">
                             </x-botones>
                         </div>
                     </form>
                 </x-targeta>
 
                 <!-- x-targeta para EDITAR tarea -->
-                <x-targeta id="editarTareaModal" title="Editar Tarea"
-                    text="Modificar tarea" height="h-auto" width="w-[750px]" padding="p-6">
+                <x-targeta id="editarTareaModal" title="Editar Tarea" text="Modificar tarea" height="h-auto"
+                    width="w-[750px]" padding="p-6">
                     <h2 class='text-white mb-4'>Editar información de la tarea</h2>
                     <form method="POST" action="" id="editarTareaForm">
                         @csrf
                         @method('PUT')
-                        
+
                         <div class="mb-4">
                             <label class="block text-gray-400 text-sm mb-2">Nombre de la tarea</label>
                             <input type="text" name="nombre_tarea" id="edit_nombre_tarea"
                                 class="w-full p-3 rounded-lg bg-[#2C2C2C] text-white border border-[#3A3A3A]"
                                 placeholder="Nombre de la tarea" required>
                         </div>
-                        
+
                         <div class="mb-4">
                             <label class="block text-gray-400 text-sm mb-2">Descripción</label>
                             <textarea name="descripcion" id="edit_descripcion" rows="4"
                                 class="w-full p-3 rounded-lg bg-[#2C2C2C] text-white border border-[#3A3A3A]"
                                 placeholder="Descripción de la tarea"></textarea>
                         </div>
-                        
+
                         <div class="mb-4">
                             <label class="block text-gray-400 text-sm mb-2">Fecha límite</label>
                             <input type="date" name="fecha_limite" id="edit_fecha_limite"
                                 class="w-full p-3 rounded-lg bg-[#2C2C2C] text-white border border-[#3A3A3A]">
                         </div>
-                        
+
                         <div class="mb-4">
                             <label class="block text-gray-400 text-sm mb-2">Prioridad</label>
                             <select name="id_prioridad" id="edit_id_prioridad"
                                 class="w-full p-3 rounded-lg bg-[#2C2C2C] text-white border border-[#3A3A3A]">
-                                @foreach($prioridad as $prior)
+                                @foreach ($prioridad as $prior)
                                     <option value="{{ $prior->id }}">{{ $prior->nombre_prioridad }}</option>
                                 @endforeach
                             </select>
@@ -235,7 +343,7 @@
                             <label class="block text-gray-400 text-sm mb-2">Estados</label>
                             <select name="id_estado" id="edit_estados"
                                 class="w-full p-3 rounded-lg bg-[#2C2C2C] text-white border border-[#3A3A3A]">
-                                @foreach($estados as $e)
+                                @foreach ($estados as $e)
                                     <option value="{{ $e->id }}">{{ $e->nombre_estado }}</option>
                                 @endforeach
                             </select>
@@ -248,6 +356,44 @@
                         </div>
                     </form>
                 </x-targeta>
+
+                <!-- x-targeta para INVITAR usuarios -->
+                @if(isset($proyectoSeleccionado) && $proyectoSeleccionado)
+                    <x-targeta id="invitarModal" title="Invitar Colaborador" text="Invitar" height="h-auto" width="w-[750px]" padding="p-6">
+                        <h2 class='text-white mb-4'>Información del colaborador</h2>
+                        <form method="POST" action="{{ route('participa.store') }}">
+                            @csrf
+                            <input type="hidden" name="id_proyecto" value="{{ $proyectoSeleccionado->id }}">
+                            
+                            <div class="mb-4">
+                                <label class="block text-gray-400 text-sm mb-2">Buscar usuario</label>
+                                <input list="usuarios" name="id_usuario" 
+                                    class="w-full p-3 rounded-lg bg-[#2C2C2C] text-white border border-[#3A3A3A]"
+                                    placeholder="Escribe el nombre del usuario" required>
+                                <datalist id="usuarios">
+                                    @foreach($usuario as $u)
+                                        <option value="{{ $u->nombre_usuario }}">{{ $u->correo }}</option>
+                                    @endforeach
+                                </datalist>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <label class="block text-gray-400 text-sm mb-2">Rol</label>
+                                <select name="id_rol" class="w-full p-3 rounded-lg bg-[#2C2C2C] text-white border border-[#3A3A3A]" required>
+                                    @foreach($rol as $r)
+                                        <option value="{{ $r->id }}">{{ $r->nombre_rol }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            
+                            <div class="flex justify-end mt-6">
+                                <x-botones text="Invitar" type="submit" color="#191919" text_color="#fff"
+                                    size="sm" height="small" border_color="#3A3A3A">
+                                </x-botones>
+                            </div>
+                        </form>
+                    </x-targeta>
+                @endif
             </div>
         </div>
     </div>

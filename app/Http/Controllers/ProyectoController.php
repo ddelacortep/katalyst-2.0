@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Estado;
+use App\Models\Participa;
 use App\Models\Prioridad;
 use App\Models\Proyecto;
+use App\Models\Rol;
 use App\Models\Tarea;
+use App\Models\Usuario;
 use Illuminate\Http\Request;
 
 class ProyectoController extends Controller
@@ -69,6 +72,7 @@ class ProyectoController extends Controller
 
         $proyecto = new Proyecto;
         $proyecto->nombre_proyecto = $request->nombre_proyecto;
+        $proyecto->id_usuario = auth()->id();
         $proyecto->favorito = false; // Asignar un valor predeterminado si es necesario
         $proyecto->save();
 
@@ -81,8 +85,15 @@ class ProyectoController extends Controller
      */
     public function show(Request $request, $id)
     {
-        //
-        $proyectos = Proyecto::all();
+        // Obtener todos los proyectos del usuario (propios + colaborador)
+        $proyectosPropios = Proyecto::where('id_usuario', auth()->id())->get();
+        $idsProyectosColaborador = Participa::where('id_usuario', auth()->id())
+            ->pluck('id_proyecto')
+            ->toArray();
+        $proyectosColaborador = Proyecto::whereIn('id', $idsProyectosColaborador)->get();
+        $proyectos = $proyectosPropios->merge($proyectosColaborador)->unique('id');
+        
+        // Buscar el proyecto sin filtrar por usuario
         $proyectoSeleccionado = Proyecto::find($id);
         
         // Obtener tareas del proyecto con filtro usando Eloquent
@@ -126,6 +137,19 @@ class ProyectoController extends Controller
         $tareas = $tareasQuery->get();
         $estados = Estado::all();
         $prioridad = Prioridad::all();
+        
+        // Datos para el modal de invitación
+        // 1. Obtener IDs de usuarios que ya participan en el proyecto
+        $usuariosEnProyecto = Participa::where('id_proyecto', $proyectoSeleccionado->id)
+            ->pluck('id_usuario')
+            ->toArray();
+        
+        // 2. Agregar al propietario del proyecto a la lista de exclusión
+        $usuariosEnProyecto[] = $proyectoSeleccionado->id_usuario;
+        
+        // 3. Filtrar usuarios: mostrar solo los que NO están en el proyecto
+        $usuario = Usuario::whereNotIn('id', $usuariosEnProyecto)->get();
+        $rol = Rol::all();
 
         return view('proyecto', compact(
             'proyectos',
@@ -134,7 +158,6 @@ class ProyectoController extends Controller
             'estados',
             'prioridad',
         ));
-
     }
 
     /**
@@ -158,8 +181,20 @@ class ProyectoController extends Controller
      */
     public function destroy(Proyecto $proyecto)
     {
+        // Verificar que el usuario es el propietario
+        if ((int)$proyecto->id_usuario !== (int)auth()->id()) {
+            return redirect()->back()->with('error', 'Solo el propietario puede eliminar el proyecto.');
+        }
+
+        // Eliminar primero todas las participaciones del proyecto
+        Participa::where('id_proyecto', $proyecto->id)->delete();
+        
+        // Eliminar todas las tareas del proyecto
+        Tarea::where('id_proyecto', $proyecto->id)->delete();
+        
+        // Ahora eliminar el proyecto
         $proyecto->delete();
 
-        return redirect('/proyecto');
+        return redirect('/proyecto')->with('success', 'Proyecto eliminado correctamente.');
     }
 }

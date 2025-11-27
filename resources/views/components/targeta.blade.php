@@ -10,6 +10,7 @@
     'onclick' => '',
     'aspectRatio' => '',
     'borderRadius' => 'rounded-[10px]',
+    'img' => null,
 ])
 
 <div id="{{ $id }}" onclick="closeModal('{{ $id }}')" 
