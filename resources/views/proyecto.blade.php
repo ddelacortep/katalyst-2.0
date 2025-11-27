@@ -76,9 +76,19 @@
             <div class="h-full">
                 <x-proyectocontenido flex="flex justify-between" class="h-full">
                     <div class="flex justify-start items-start">
-                        <x-botones text="Filtro" type="button" color="#191919" text_color="#fff" size="md"
-                            height="small" href="{{ route('prueba') }}" img="images/filter.svg" border_color="#3A3A3A">
-                        </x-botones>
+                        @if (isset($proyectoSeleccionado) && $proyectoSeleccionado)
+                            <form method="GET" action="{{ route('proyecto.show', $proyectoSeleccionado->id) }}" class="flex flex-row items-center gap-2">
+                                <select name="filtro" class="p-3 rounded-lg bg-[#191919] border border-[#3A3A3A] text-white">
+                                    <option value="">Sin filtro</option>
+                                    <option value="fecha_limite" {{ request('filtro') == 'fecha_limite' ? 'selected' : '' }}>Por Fecha Límite</option>
+                                    <option value="estado" {{ request('filtro') == 'estado' ? 'selected' : '' }}>Por Estado</option>
+                                    <option value="prioridad" {{ request('filtro') == 'prioridad' ? 'selected' : '' }}>Por Prioridad</option>
+                                </select>
+                                <x-botones text="Filtrar" type="submit" color="#191919" text_color="#fff" size="sm"
+                                    height="small" border_color="#3A3A3A">
+                                </x-botones>
+                            </form>
+                        @endif
                     </div>
                     <div class="flex justify-end items-start gap-2">
                         @if (isset($proyectoSeleccionado) && $proyectoSeleccionado)

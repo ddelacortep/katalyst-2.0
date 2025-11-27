@@ -13,14 +13,37 @@ class ProyectoController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-
+        // Obtener todos los proyectos
         $proyectos = Proyecto::all();
-        $estados = Estado::all(); // ← Añadir esto
-        $prioridad = Prioridad::all(); // ← Añadir esto
-        $proyectoSeleccionado = null; // No hay proyecto seleccionado en la vista inicial
-        $tareas = collect(); // Colección vacía de tareas
+        
+        // Aplicar filtro según la selección
+        $filtro = $request->get('filtro');
+        
+        if ($filtro) {
+            switch ($filtro) {
+                case 'fecha_creacion':
+                    // Ordenar por ID (más recientes primero si el ID es autoincremental)
+                    $proyectos = $proyectos->sortByDesc('id');
+                    break;
+                    
+                case 'estado':
+                    // Ordenar alfabéticamente por nombre
+                    $proyectos = $proyectos->sortBy('estado');
+                    break;
+                    
+                case 'prioridad':
+                    // Mostrar favoritos primero
+                    $proyectos = $proyectos->sortByDesc('prioridad');
+                    break;
+            }
+        }
+        
+        $estados = Estado::all();
+        $prioridad = Prioridad::all();
+        $proyectoSeleccionado = null;
+        $tareas = collect();
 
         return view('proyecto', compact('proyectos', 'estados', 'prioridad', 'proyectoSeleccionado', 'tareas'));
 
@@ -56,12 +79,51 @@ class ProyectoController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show($id)
+    public function show(Request $request, $id)
     {
         //
         $proyectos = Proyecto::all();
         $proyectoSeleccionado = Proyecto::find($id);
-        $tareas = Tarea::where('id_proyecto', $proyectoSeleccionado->id)->get();
+        
+        // Obtener tareas del proyecto con filtro usando Eloquent
+        $tareasQuery = Tarea::where('id_proyecto', $proyectoSeleccionado->id);
+        
+        // Aplicar filtro según la selección
+        $filtro = $request->get('filtro');
+        
+        if ($filtro) {
+            switch ($filtro) {
+                    
+                case 'fecha_limite':
+                    // Ordenar por fecha límite (más cercanas a hoy primero)
+                    $tareasQuery->orderByRaw("ABS(DATEDIFF(day, GETDATE(), fecha_limite)) ASC");
+                    break;
+                    
+                case 'estado':
+                    // Ordenar por estado: Pendiente, En progreso, Completado
+                    $tareasQuery->join('Estado', 'Tarea.id_estado', '=', 'Estado.id')
+                        ->orderByRaw("CASE Estado.nombre_estado 
+                            WHEN 'Pendiente' THEN 1 
+                            WHEN 'En progreso' THEN 2 
+                            WHEN 'Completado' THEN 3 
+                            ELSE 4 END")
+                        ->select('Tarea.*');
+                    break;
+                    
+                case 'prioridad':
+                    // Ordenar por prioridad: Alta, Media, Baja
+                    $tareasQuery->join('Prioridad', 'Tarea.id_prioridad', '=', 'Prioridad.id')
+                        ->orderByRaw("CASE Prioridad.nombre_prioridad 
+                            WHEN 'Alta' THEN 1 
+                            WHEN 'Media' THEN 2 
+                            WHEN 'Baja' THEN 3 
+                            ELSE 4 END")
+                        ->select('Tarea.*');
+                    break;
+            }
+        }
+        
+        $tareas = $tareasQuery->get();
         $estados = Estado::all();
         $prioridad = Prioridad::all();
 
@@ -70,7 +132,7 @@ class ProyectoController extends Controller
             'proyectoSeleccionado',
             'tareas',
             'estados',
-            'prioridad', // <-- pasa la tarea a editar
+            'prioridad',
         ));
 
     }
