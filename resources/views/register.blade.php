@@ -13,11 +13,28 @@
                 <form action="{{ route('register.submit') }}" method="POST" class="space-y-5">
                     @csrf
 
-                    <input type="text" name="nombre_usuario" placeholder="Nombre de usuario" style="background-color: #191919; border-color: #3a3a3a;" class="border w-full text-white font-medium rounded-lg px-5 py-3 transition-all duration-200 outline-none placeholder-gray-400" />
+                    {{-- Mostrar errores de validación --}}
+                    @if ($errors->any())
+                        <div class="bg-red-600 text-white px-4 py-3 rounded-lg mb-4">
+                            <ul class="list-disc list-inside text-sm">
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
 
-                    <input type="email" name="correo" placeholder="Mail" style="background-color: #191919; border-color: #3a3a3a;" class="border w-full text-white font-medium rounded-lg px-5 py-3 transition-all duration-200 outline-none placeholder-gray-400" />
+                    @if(session('success'))
+                        <div class="bg-green-600 text-white px-4 py-3 rounded-lg mb-4">
+                            {{ session('success') }}
+                        </div>
+                    @endif
 
-                    <input type="password" name="contraseña" placeholder="Contraseña" style="background-color: #191919; border-color: #3a3a3a;" class="border w-full text-white font-medium rounded-lg px-5 py-3 transition-all duration-200 outline-none placeholder-gray-400" />
+                    <input type="text" name="nombre_usuario" value="{{ old('nombre_usuario') }}" placeholder="Nombre de usuario" style="background-color: #191919; border-color: #3a3a3a;" class="border w-full text-white font-medium rounded-lg px-5 py-3 transition-all duration-200 outline-none placeholder-gray-400 @error('nombre_usuario') border-red-500 @enderror" />
+
+                    <input type="email" name="correo" value="{{ old('correo') }}" placeholder="Mail" style="background-color: #191919; border-color: #3a3a3a;" class="border w-full text-white font-medium rounded-lg px-5 py-3 transition-all duration-200 outline-none placeholder-gray-400 @error('correo') border-red-500 @enderror" />
+
+                    <input type="password" name="contraseña" placeholder="Contraseña" style="background-color: #191919; border-color: #3a3a3a;" class="border w-full text-white font-medium rounded-lg px-5 py-3 transition-all duration-200 outline-none placeholder-gray-400 @error('contraseña') border-red-500 @enderror" />
 
                     <input type="password" name="contraseña_confirmation" placeholder="Confirmar contraseña" style="background-color: #191919; border-color: #3a3a3a;" class="border w-full text-white font-medium rounded-lg px-5 py-3 transition-all duration-200 outline-none placeholder-gray-400" />
                     <div class="pt-4 flex justify-center">
