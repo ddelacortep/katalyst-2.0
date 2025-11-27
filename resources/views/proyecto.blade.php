@@ -201,20 +201,22 @@
                                 @endforeach
                                 @if(session('status'))
                                     <div id="toast-status" class="fixed bottom-4 right-4 z-50 opacity-0 transition-opacity duration-500 ease-in-out pointer-events-none">
-                                        <x-botones
-                                            text="{{ session('status') }}"
-                                            type="button"
-                                            color="#191919"
-                                            text_color="#fff"
-                                            size="sm"
-                                            height="small"
-                                            border_color="#3A3A3A"
-                                        />
+                                        <div class="bg-[#191919] text-white p-4 rounded-lg shadow-lg border border-[#3A3A3A]">
+                                            <p>{{ session('status') }}</p>
+                                            @if(session('googleCalendarLink'))
+                                                <a href="{{ session('googleCalendarLink') }}" target="_blank" rel="noopener noreferrer" class="text-blue-400 hover:text-blue-300 underline mt-2 inline-block">
+                                                    Sí, añadir
+                                                </a>
+                                            @endif
+                                        </div>
                                     </div>
                                     <script>
                                         document.addEventListener('DOMContentLoaded', function () {
                                             const toast = document.getElementById('toast-status');
                                             if (toast) {
+                                                // Hacemos que el toast sea interactivo
+                                                toast.classList.remove('pointer-events-none');
+
                                                 requestAnimationFrame(() => {
                                                     toast.classList.remove('opacity-0');
                                                     toast.classList.add('opacity-100');
