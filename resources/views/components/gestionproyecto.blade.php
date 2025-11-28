@@ -12,6 +12,6 @@
 <div
     class="flex flex-col border {{ $height }} {{ $width }} {{ $bg }} {{ $rounded }} {{ $padding }} {{ $borderColor }} {{ $marginBottom }} min-h-0">
     {{-- Contenido de gestion de proyecto --}}
-    {{ $slot }}
+    {{ $slot ?? ''}}
 </div>
 
