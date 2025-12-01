@@ -78,7 +78,7 @@ class ProyectoController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show($id)
+    public function show(Request $request, $id)
     {
         // Obtener todos los proyectos del usuario (propios + colaborador)
         $proyectosPropios = Proyecto::where('id_usuario', auth()->id())->get();
@@ -103,7 +103,44 @@ class ProyectoController extends Controller
             abort(403, 'No tienes permiso para ver este proyecto.');
         }
         
-        $tareas = Tarea::where('id_proyecto', $proyectoSeleccionado->id)->get();
+        // Obtener tareas del proyecto con filtro
+        $tareasQuery = Tarea::where('id_proyecto', $proyectoSeleccionado->id);
+        
+        // Aplicar filtro según la selección
+        $filtro = $request->get('filtro');
+        
+        if ($filtro) {
+            switch ($filtro) {
+                case 'fecha':
+                    // Ordenar por fecha límite (más cercanas a hoy primero)
+                    $tareasQuery->orderByRaw("ABS(DATEDIFF(day, GETDATE(), fecha_limite)) ASC");
+                    break;
+                    
+                case 'estado':
+                    // Ordenar por estado: Pendiente, En progreso, Completado
+                    $tareasQuery->join('Estado', 'Tarea.id_estado', '=', 'Estado.id')
+                        ->orderByRaw("CASE Estado.nombre_estado 
+                            WHEN 'Pendiente' THEN 1 
+                            WHEN 'En progreso' THEN 2 
+                            WHEN 'Completado' THEN 3 
+                            ELSE 4 END")
+                        ->select('Tarea.*');
+                    break;
+                    
+                case 'prioridad':
+                    // Ordenar por prioridad: Alta, Media, Baja
+                    $tareasQuery->join('Prioridad', 'Tarea.id_prioridad', '=', 'Prioridad.id')
+                        ->orderByRaw("CASE Prioridad.nombre_prioridad 
+                            WHEN 'Alta' THEN 1 
+                            WHEN 'Media' THEN 2 
+                            WHEN 'Baja' THEN 3 
+                            ELSE 4 END")
+                        ->select('Tarea.*');
+                    break;
+            }
+        }
+        
+        $tareas = $tareasQuery->get();
         $estados = Estado::all();
         $prioridad = Prioridad::all();
         
