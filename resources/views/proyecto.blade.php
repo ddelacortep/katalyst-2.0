@@ -149,10 +149,12 @@
             <div class="h-full">
                 <x-proyectocontenido flex="flex justify-between" class="h-full">
                     <div class="flex justify-start items-start">
-                        <form method="GET" action="{{ route('tareas.index') }}" class="flex flex-row items-center gap-2">
-                            <x-filtro :options="['fecha' => 'Fecha', 'prioridad' => 'Prioridad', 'estado' => 'Estado']" name="filtro" :selected="request('filtro')" />
-                            <x-botones text="Filtrar" type="submit" color="#191919" text_color="#fff" size="sm" height="small" border_color="#3A3A3A" />
-                        </form>
+                        @if (isset($proyectoSeleccionado) && $proyectoSeleccionado)
+                            <form method="GET" action="{{ route('proyecto.show', $proyectoSeleccionado->id) }}" class="flex flex-row items-center gap-2">
+                                <x-filtro :options="['fecha' => 'Fecha', 'prioridad' => 'Prioridad', 'estado' => 'Estado']" name="filtro" :selected="request('filtro')" />
+                                <x-botones text="Filtrar" type="submit" color="#191919" text_color="#fff" size="sm" height="small" border_color="#3A3A3A" />
+                            </form>
+                        @endif
                     </div>
                     <div class="flex justify-end items-start gap-2">
                         @if (isset($proyectoSeleccionado) && $proyectoSeleccionado)
