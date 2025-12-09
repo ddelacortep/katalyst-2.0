@@ -22,6 +22,10 @@ class Tarea extends Model
         'id_proyecto',
         'id_prioridad',
         'fecha_creacion',
+        'id_estado',
+        'id_usuario',
+        'id_usuario_creador',
+        'id_usuario_asignado',
     ];
 
     public function proyecto()
@@ -37,5 +41,15 @@ class Tarea extends Model
     public function estado()
     {
         return $this->belongsTo(Estado::class, 'id_estado');
+    }
+
+    public function creador()
+    {
+        return $this->belongsTo(Usuario::class, 'id_usuario_creador');
+    }
+
+    public function asignado()
+    {
+        return $this->belongsTo(Usuario::class, 'id_usuario_asignado');
     }
 }

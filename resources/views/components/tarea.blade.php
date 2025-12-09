@@ -29,11 +29,29 @@
             </x-botones>
         @endif
 
-        <form method="POST" action="{{ route('tareas.destroy', $tarea->id ?? '') }}">
-            @csrf
-            @method('DELETE')
-            <x-botones text="Eliminar tarea" type="submit" color="#ff0000" text_color="#fff" size="sm" height="small" border_color="#3A3A3A">
-            </x-botones>
-        </form>
+        @php
+            $puedeEliminar = false;
+            $user = auth()->user();
+            $proyecto = $tarea->proyecto;
+            
+            if ($user->isAdminIn($proyecto->id)) {
+                $puedeEliminar = true;
+            } elseif ($user->isEditorIn($proyecto->id) && $tarea->id_usuario_creador === $user->id) {
+                $puedeEliminar = true;
+            } elseif ($user->isVisorIn($proyecto->id) && 
+                      $tarea->id_usuario_creador === $user->id && 
+                      $tarea->id_usuario_asignado === $user->id) {
+                $puedeEliminar = true;
+            }
+        @endphp
+
+        @if($puedeEliminar)
+            <form method="POST" action="{{ route('tareas.destroy', $tarea->id ?? '') }}">
+                @csrf
+                @method('DELETE')
+                <x-botones text="Eliminar tarea" type="submit" color="#ff0000" text_color="#fff" size="sm" height="small" border_color="#3A3A3A">
+                </x-botones>
+            </form>
+        @endif
     </div>
 </div>

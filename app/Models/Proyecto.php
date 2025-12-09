@@ -28,6 +28,22 @@ class Proyecto extends Model
         return $this->belongsToMany(Usuario::class, 'id');
     }
 
+    public function owner()
+    {
+        return $this->belongsTo(Usuario::class, 'id_usuario');
+    }
+
+    public function usuarios()
+    {
+        return $this->belongsToMany(Usuario::class, 'Participa', 'id_proyecto', 'id_usuario')
+                    ->withPivot('id_rol');
+    }
+
+    public function participaciones()
+    {
+        return $this->hasMany(Participa::class, 'id_proyecto');
+    }
+
     protected $fillable = [
         'nombre_proyecto',
         'favorito',

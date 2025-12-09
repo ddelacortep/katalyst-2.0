@@ -6,6 +6,7 @@ use App\Models\Estado;
 use App\Models\Prioridad;
 use App\Models\Proyecto;
 use App\Models\Tarea;
+use App\Models\Usuario;
 use Illuminate\Http\Request;
 
 class TareaController extends Controller
@@ -60,27 +61,35 @@ class TareaController extends Controller
      */
     public function store(Request $request)
     {
-        //
         $validated = $request->validate([
             'nombre_tarea' => 'required|string|max:255',
             'descripcion' => 'nullable|string',
             'fecha_limite' => 'nullable|date',
             'id_prioridad' => 'nullable|exists:Prioridad,id',
             'id_proyecto' => 'required|exists:Proyecto,id',
-            'id_estado' => 'nullable|exists:Estado,id',  // ← OBLIGATORIO
+            'id_estado' => 'nullable|exists:Estado,id',
+            'id_usuario_asignado' => 'nullable|exists:Usuario,id',
         ]);
+
+        $proyecto = Proyecto::findOrFail($request->id_proyecto);
+        $user = auth()->user();
+        
+        if (!$user->hasAccessToProject($proyecto->id)) {
+            return redirect()->back()->with('error', 'No tienes acceso a este proyecto.');
+        }
 
         $tarea = new Tarea;
         $tarea->nombre_tarea = $request->nombre_tarea;
         $tarea->desc_tarea = $request->descripcion;
         $tarea->fecha_limite = $request->fecha_limite;
-        $tarea->id_prioridad = $request->id_prioridad ?? 1;  // Default
-        $tarea->id_proyecto = $request->id_proyecto;  // ← DEL FORMULARIO
-        $tarea->id_estado = $request->id_estado ?? $tarea->id_estado;  // Default
+        $tarea->id_prioridad = $request->id_prioridad ?? 1;
+        $tarea->id_proyecto = $request->id_proyecto;
+        $tarea->id_estado = $request->id_estado ?? 1;
         $tarea->fecha_creacion = now();
+        $tarea->id_usuario_creador = $user->id;
+        $tarea->id_usuario_asignado = $request->id_usuario_asignado ?? null;
         $tarea->save();
 
-        // Redirigir al mismo proyecto
         return redirect()->route('proyecto.show', $request->id_proyecto)
             ->with('success', 'Tarea creada exitosamente.');
     }
@@ -149,11 +158,30 @@ class TareaController extends Controller
      */
     public function destroy(Tarea $tarea)
     {
+        $user = auth()->user();
+        $proyecto = $tarea->proyecto;
         $idProyecto = $tarea->id_proyecto;
-    
-        $tarea->delete();                  // Eliminar la tarea
-
-        return redirect()->route('proyecto.show', $idProyecto)
-            ->with('success', 'Tarea eliminada exitosamente.');
+        
+        if ($user->isAdminIn($proyecto->id)) {
+            $tarea->delete();
+            return redirect()->route('proyecto.show', $idProyecto)
+                ->with('success', 'Tarea eliminada exitosamente.');
+        }
+        
+        if ($user->isEditorIn($proyecto->id) && $tarea->id_usuario_creador === $user->id) {
+            $tarea->delete();
+            return redirect()->route('proyecto.show', $idProyecto)
+                ->with('success', 'Tarea eliminada exitosamente.');
+        }
+        
+        if ($user->isVisorIn($proyecto->id) && 
+            $tarea->id_usuario_creador === $user->id && 
+            $tarea->id_usuario_asignado === $user->id) {
+            $tarea->delete();
+            return redirect()->route('proyecto.show', $idProyecto)
+                ->with('success', 'Tarea eliminada exitosamente.');
+        }
+        
+        return redirect()->back()->with('error', 'No tienes permiso para eliminar esta tarea.');
     }
 }

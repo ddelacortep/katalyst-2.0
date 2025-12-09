@@ -55,7 +55,6 @@ class ProyectoController extends Controller
      */
     public function store(Request $request)
     {
-        //
         $validated = $request->validate([
             'nombre_proyecto' => 'required|string|max:255',
         ]);
@@ -63,8 +62,14 @@ class ProyectoController extends Controller
         $proyecto = new Proyecto;
         $proyecto->nombre_proyecto = $request->nombre_proyecto;
         $proyecto->id_usuario = auth()->id();
-        $proyecto->favorito = false; // Asignar un valor predeterminado si es necesario
+        $proyecto->favorito = false;
         $proyecto->save();
+
+        $participa = new Participa();
+        $participa->id_proyecto = $proyecto->id;
+        $participa->id_usuario = auth()->id();
+        $participa->id_rol = 1;
+        $participa->save();
 
         return redirect()->route('proyecto')->with('success', 'Proyecto creado exitosamente.');
 
