@@ -158,21 +158,25 @@
                     </div>
                     <div class="flex justify-end items-start gap-2">
                         @if (isset($proyectoSeleccionado) && $proyectoSeleccionado)
-                            <x-botones onclick="openModal('invitarModal')" img="images/fixedbar_icons/user_mas.svg" type="button" color="#191919"
-                                text_color="#fff" size="sm" height="small" border_color="#3A3A3A"
-                                marginRight="mr-5">
-                            </x-botones> 
+                            @if(auth()->user()->canManageIn($proyectoSeleccionado->id))
+                                <x-botones onclick="openModal('invitarModal')" img="images/fixedbar_icons/user_mas.svg" type="button" color="#191919"
+                                    text_color="#fff" size="sm" height="small" border_color="#3A3A3A"
+                                    marginRight="mr-5">
+                                </x-botones>
+                            @endif
                             <x-botones onclick="openModal('tareaModal')" text="+ Tarea" type="button" color="#191919"
                                 text_color="#fff" size="sm" height="small" border_color="#3A3A3A"
                                 marginRight="mr-5">
                             </x-botones>
-                            <form method="POST" action="{{ route('proyecto.destroy', $proyectoSeleccionado->id) }}"
-                                onsubmit="return confirm('¿Seguro que quieres eliminar este proyecto?');">
-                                @csrf
-                                @method('DELETE')
-                                <x-botones text="Eliminar Proyecto" type="submit" color="#ff0000" text_color="#fff"
-                                    size="sm" height="small" border_color="#3A3A3A" />
-                            </form>
+                            @if(auth()->user()->isOwnerOf($proyectoSeleccionado->id))
+                                <form method="POST" action="{{ route('proyecto.destroy', $proyectoSeleccionado->id) }}"
+                                    onsubmit="return confirm('¿Seguro que quieres eliminar este proyecto?');">
+                                    @csrf
+                                    @method('DELETE')
+                                    <x-botones text="Eliminar Proyecto" type="submit" color="#ff0000" text_color="#fff"
+                                        size="sm" height="small" border_color="#3A3A3A" />
+                                </form>
+                            @endif
                         @else
                             <x-botones onclick="alert('Selecciona un proyecto primero')" text="+ Tarea" type="button"
                                 color="#191919" text_color="#fff" size="sm" height="small" border_color="#3A3A3A">
@@ -375,8 +379,14 @@
                             <div class="mb-4">
                                 <label class="block text-gray-400 text-sm mb-2">Rol</label>
                                 <select name="id_rol" class="w-full p-3 rounded-lg bg-[#2C2C2C] text-white border border-[#3A3A3A]" required>
+                                    @php
+                                        $rolUsuario = auth()->user()->getRoleInProject($proyectoSeleccionado->id);
+                                    @endphp
                                     @foreach($rol as $r)
-                                        <option value="{{ $r->id }}">{{ $r->nombre_rol }}</option>
+                                        @if($rolUsuario === 'Editor' && $r->id == 1)
+                                        @else
+                                            <option value="{{ $r->id }}">{{ $r->nombre_rol }}</option>
+                                        @endif
                                     @endforeach
                                 </select>
                             </div>

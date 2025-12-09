@@ -6,16 +6,16 @@ use Illuminate\Database\Eloquent\Model;
 
 class Rol extends Model
 {
-    //
     protected $table = 'Rol';
 
-    // private $primaryKey = 'id';
     public $timestamps = false;
 
-    public $incrementing = false;
+    public $incrementing = true;
 
-    public function participa()
+    protected $fillable = ['nombre_rol'];
+
+    public function participaciones()
     {
-        return $this->belongsTo(Participa::class, 'id_rol');
+        return $this->hasMany(Participa::class, 'id_rol');
     }
 }
