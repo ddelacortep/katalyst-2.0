@@ -108,7 +108,7 @@
                     <div class="flex justify-end items-start gap-2">
                         @if (isset($proyectoSeleccionado) && $proyectoSeleccionado)
                             @if(auth()->user()->canManageIn($proyectoSeleccionado->id))
-                                <x-botones onclick="openModal('invitarModal')" img="images/fixedbar_icons/user_mas.svg" type="button" color="#191919"
+                                <x-botones onclick="openModal('invitarModal')" text="+ Invitar" type="button" color="#191919"
                                     text_color="#fff" size="sm" height="small" border_color="#3A3A3A"
                                     marginRight="mr-5">
                                 </x-botones>
@@ -314,15 +314,11 @@
                             <input type="hidden" name="id_proyecto" value="{{ $proyectoSeleccionado->id }}">
                             
                             <div class="mb-4">
-                                <label class="block text-gray-400 text-sm mb-2">Buscar usuario</label>
-                                <input list="usuarios" name="id_usuario" 
+                                <label class="block text-gray-400 text-sm mb-2">Invitar usuario</label>
+                                <input type="text" name="usuario_identificador" 
                                     class="w-full p-3 rounded-lg bg-[#2C2C2C] text-white border border-[#3A3A3A]"
-                                    placeholder="Escribe el nombre del usuario" required>
-                                <datalist id="usuarios">
-                                    @foreach($usuario as $u)
-                                        <option value="{{ $u->nombre_usuario }}">{{ $u->correo }}</option>
-                                    @endforeach
-                                </datalist>
+                                    placeholder="Escribe el nombre de usuario o correo electrónico" required>
+                                <p class="text-gray-500 text-xs mt-1">Introduce el nombre de usuario o correo electrónico exacto</p>
                             </div>
                             
                             <div class="mb-4">

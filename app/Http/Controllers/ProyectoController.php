@@ -35,10 +35,9 @@ class ProyectoController extends Controller
         $prioridad = Prioridad::all();
         $proyectoSeleccionado = null;
         $tareas = collect();
-        $usuario = Usuario::all();
         $rol = Rol::all();
 
-        return view('proyecto', compact('proyectos', 'estados', 'prioridad', 'proyectoSeleccionado', 'tareas', 'usuario', 'rol'));
+        return view('proyecto', compact('proyectos', 'estados', 'prioridad', 'proyectoSeleccionado', 'tareas', 'rol'));
 
     }
 
@@ -143,18 +142,6 @@ class ProyectoController extends Controller
         $tareas = $tareasQuery->get();
         $estados = Estado::all();
         $prioridad = Prioridad::all();
-        
-        // Datos para el modal de invitación
-        // 1. Obtener IDs de usuarios que ya participan en el proyecto
-        $usuariosEnProyecto = Participa::where('id_proyecto', $proyectoSeleccionado->id)
-            ->pluck('id_usuario')
-            ->toArray();
-        
-        // 2. Agregar al propietario del proyecto a la lista de exclusión
-        $usuariosEnProyecto[] = $proyectoSeleccionado->id_usuario;
-        
-        // 3. Filtrar usuarios: mostrar solo los que NO están en el proyecto
-        $usuario = Usuario::whereNotIn('id', $usuariosEnProyecto)->get();
         $rol = Rol::all();
 
         return view('proyecto', compact(
@@ -163,7 +150,6 @@ class ProyectoController extends Controller
             'tareas',
             'estados',
             'prioridad',
-            'usuario',
             'rol',
         ));
     }
