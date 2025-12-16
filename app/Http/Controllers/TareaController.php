@@ -156,4 +156,32 @@ class TareaController extends Controller
         return redirect()->route('proyecto.show', $idProyecto)
             ->with('success', 'Tarea eliminada exitosamente.');
     }
+
+    public function actualizarEstado(Request $request, $id)
+    {
+        $tarea = Tarea::find($id);
+        
+        if (!$tarea) {
+            return response()->json(['error' => 'Tarea no encontrada'], 404);
+        }
+
+        // Validar que el estado existe
+        $nuevoEstado = $request->input('estado_id');
+        $estado = \App\Models\Estado::find($nuevoEstado);
+        
+        if (!$estado) {
+            return response()->json(['error' => 'Estado no válido'], 400);
+        }
+
+        // Actualizar el estado de la tarea
+        $tarea->id_estado = $nuevoEstado;
+        $tarea->save();
+
+        return response()->json([
+            'success' => true,
+            'mensaje' => 'Estado actualizado correctamente',
+            'tarea' => $tarea,
+            'nuevo_estado' => $estado->nombre_estado
+        ]);
+    }
 }
