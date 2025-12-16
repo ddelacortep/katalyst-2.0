@@ -42,8 +42,8 @@ class ParticipaController extends Controller
         
         // Buscar usuario por nombre de usuario o correo electrónico
         $usuario = Usuario::where('nombre_usuario', $usuarioIdentificador)
-                          ->orWhere('correo', $usuarioIdentificador)
-                          ->first();
+                        ->orWhere('correo', $usuarioIdentificador)
+                        ->first();
         
         if (!$usuario) {
             return redirect()->back()->with('error', 'Usuario no encontrado. Verifica que el nombre de usuario o correo electrónico sea correcto.');
