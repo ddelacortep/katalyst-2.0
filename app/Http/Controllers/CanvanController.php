@@ -93,5 +93,45 @@ class CanvanController extends Controller{
             'rol',
         ));
     }
+
+    public function getTareasAjax($id)
+    {
+        // Obtener todos los proyectos del usuario (propios + colaborador)
+        $proyectosPropios = Proyecto::where('id_usuario', auth()->id())->get();
+        $idsProyectosColaborador = Participa::where('id_usuario', auth()->id())
+            ->pluck('id_proyecto')
+            ->toArray();
+        $proyectosColaborador = Proyecto::whereIn('id', $idsProyectosColaborador)->get();
+        
+        // Buscar el proyecto sin filtrar por usuario
+        $proyectoSeleccionado = Proyecto::find($id);
+        
+        if (!$proyectoSeleccionado) {
+            return response()->json(['error' => 'Proyecto no encontrado'], 404);
+        }
+        
+        // Verificar acceso: debe ser propietario O colaborador
+        $esPropiedad = ((int)$proyectoSeleccionado->id_usuario === (int)auth()->id());
+        $esColaborador = in_array((int)$id, $idsProyectosColaborador);
+        
+        if (!$esPropiedad && !$esColaborador) {
+            return response()->json(['error' => 'No tienes permiso para ver este proyecto'], 403);
+        }
+
+        // Obtener tareas del proyecto agrupadas por estado
+        $tareas = Tarea::where('id_proyecto', $proyectoSeleccionado->id)
+            ->with(['estado', 'prioridad'])
+            ->get()
+            ->groupBy('id_estado');
+
+        // Obtener estados
+        $estados = Estado::all();
+
+        return response()->json([
+            'proyecto' => $proyectoSeleccionado,
+            'tareas' => $tareas,
+            'estados' => $estados
+        ]);
+    }
     
 }

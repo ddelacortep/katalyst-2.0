@@ -51,8 +51,9 @@
                             @if (isset($proyectos) && $proyectos->count() > 0)
                                 @foreach ($proyectos as $proyecto)
                                     <x-proyectos height="h-[60px]" width="w-[170px]" padding="p-3"
-                                        class="@if (isset($proyectoSeleccionado) && $proyectoSeleccionado->id == $proyecto->id) border-blue-500 border-4 @endif"
-                                        onclick="window.location.href='{{ route('canvan.show', $proyecto->id) }}'">
+                                        class="proyecto-card @if (isset($proyectoSeleccionado) && $proyectoSeleccionado->id == $proyecto->id) border-blue-500 border-4 @endif cursor-pointer"
+                                        data-proyecto-id="{{ $proyecto->id }}"
+                                        onclick="cargarTareasProyecto({{ $proyecto->id }})">
                                         <div class="w-full flex items-center justify-center px-2">
                                             <h2 class="text-white font-semibold text-sm truncate max-w-full">
                                                 {{ $proyecto->nombre_proyecto }}
@@ -70,7 +71,57 @@
                     </div>
                 </x-gestionproyecto>
             </div>
+
+            {{-- CONTENEDOR KANBAN - Lado derecho --}}
+            <div id="kanban-container" class="bg-transparent mr-[6px] mb-[6px] flex flex-col min-h-0 opacity-0 transition-opacity duration-500 ease-in-out">
+                <div class="bg-[#191919] rounded-lg p-6 h-full flex flex-col">
+                    {{-- Header del Kanban --}}
+                    <div id="kanban-header" class="flex-shrink-0 mb-6">
+                        <h2 id="proyecto-nombre" class="text-2xl font-semibold text-white">Selecciona un proyecto</h2>
+                    </div>
+
+                    {{-- Columnas del Kanban --}}
+                    <div id="kanban-board" class="flex-1 grid grid-cols-3 gap-6 min-h-0">
+                        {{-- Columna Pendiente --}}
+                        <div class="kanban-column bg-[#2d2d44] rounded-lg p-4 flex flex-col" data-estado-id="1">
+                            <h3 class="text-lg font-semibold text-white mb-4 text-center border-b border-gray-600 pb-2">
+                                Pendiente
+                            </h3>
+                            <div class="tareas-container flex-1 space-y-3 overflow-y-auto min-h-0
+                                [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:bg-gray-700 
+                                [&::-webkit-scrollbar-thumb]:bg-gray-500 [&::-webkit-scrollbar-thumb]:rounded-full">
+                                {{-- Las tareas se cargarán aquí via AJAX --}}
+                            </div>
+                        </div>
+
+                        {{-- Columna En Progreso --}}
+                        <div class="kanban-column bg-[#2d2d44] rounded-lg p-4 flex flex-col" data-estado-id="2">
+                            <h3 class="text-lg font-semibold text-white mb-4 text-center border-b border-yellow-600 pb-2">
+                                En Progreso
+                            </h3>
+                            <div class="tareas-container flex-1 space-y-3 overflow-y-auto min-h-0
+                                [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:bg-gray-700 
+                                [&::-webkit-scrollbar-thumb]:bg-gray-500 [&::-webkit-scrollbar-thumb]:rounded-full">
+                                {{-- Las tareas se cargarán aquí via AJAX --}}
+                            </div>
+                        </div>
+
+                        {{-- Columna Completado --}}
+                        <div class="kanban-column bg-[#2d2d44] rounded-lg p-4 flex flex-col" data-estado-id="3">
+                            <h3 class="text-lg font-semibold text-white mb-4 text-center border-b border-green-600 pb-2">
+                                Completado
+                            </h3>
+                            <div class="tareas-container flex-1 space-y-3 overflow-y-auto min-h-0
+                                [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:bg-gray-700 
+                                [&::-webkit-scrollbar-thumb]:bg-gray-500 [&::-webkit-scrollbar-thumb]:rounded-full">
+                                {{-- Las tareas se cargarán aquí via AJAX --}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     <script src="{{ asset('js/modal.js') }}"></script>
+    <script src="{{ asset('js/canvan.js') }}"></script></script>
 @endsection
