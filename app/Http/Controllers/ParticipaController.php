@@ -33,20 +33,23 @@ class ParticipaController extends Controller
     {
         $request->validate([
             'id_proyecto' => 'required|exists:Proyecto,id',
-            'id_usuario' => 'required',
+            'usuario_identificador' => 'required|string',
             'id_rol' => 'required|exists:Rol,id',
         ]);
 
         $idProyecto = $request->id_proyecto;
-        $idUsuario = $request->id_usuario;
+        $usuarioIdentificador = trim($request->usuario_identificador);
         
-        if (!is_numeric($idUsuario)) {
-            $usuario = Usuario::where('nombre_usuario', $idUsuario)->first();
-            if (!$usuario) {
-                return redirect()->back()->with('error', 'Usuario no encontrado.');
-            }
-            $idUsuario = $usuario->id;
+        // Buscar usuario por nombre de usuario o correo electrónico
+        $usuario = Usuario::where('nombre_usuario', $usuarioIdentificador)
+                          ->orWhere('correo', $usuarioIdentificador)
+                          ->first();
+        
+        if (!$usuario) {
+            return redirect()->back()->with('error', 'Usuario no encontrado. Verifica que el nombre de usuario o correo electrónico sea correcto.');
         }
+        
+        $idUsuario = $usuario->id;
 
         $proyecto = Proyecto::findOrFail($idProyecto);
         $user = auth()->user();
