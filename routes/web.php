@@ -4,6 +4,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\TareaController;
+use App\Http\Controllers\CanvanController;
 use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\ProyectoController;
 use App\Http\Controllers\RegisterController;
@@ -36,12 +37,26 @@ Route::middleware(['auth', 'prevent-back-history'])->group(function () {
         ->name('participa.store');
     
     Route::delete('/participa/{proyectoId}/{usuarioId}', [App\Http\Controllers\ParticipaController::class, 'destroy'])
-        ->name('participa.destroy');
+        ->name('participa.destroy');   
+
+    Route::get('/canvan', [CanvanController::class, 'index'])->name('canvan');
+
+    Route::get('/canvan/{id}', [CanvanController::class, 'show'])
+        ->name('canvan.show');
+
+    // Rutas AJAX para Kanban
+    Route::get('/canvan/{id}/tareas', [CanvanController::class, 'getTareasAjax'])
+        ->name('canvan.tareas');
+    
+    Route::post('/tareas/{id}/actualizar-estado', [TareaController::class, 'actualizarEstado'])
+        ->name('tareas.actualizar-estado');
+
 });
 
 Route::get('/', function () {
     return view('login');
 });
+
 
 Route::get('/prueba', function () {
     return view('prueba', [
