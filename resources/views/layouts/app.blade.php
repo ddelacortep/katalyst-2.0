@@ -35,4 +35,6 @@ window.addEventListener('pageshow', function(e) {
     </script>
 </body>
 
+<script> window.BASE_URL = "{{ url('/') }}"; </script>
+
 </html>

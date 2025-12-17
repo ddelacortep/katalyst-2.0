@@ -32,7 +32,8 @@ function cargarTareasProyecto(proyectoId) {
 }
 
 function realizarCargaTareas(proyectoId, kanbanContainer, proyectoNombre) {
-    fetch(`/canvan/${proyectoId}/tareas`, {
+    const BASE_URL = window.BASE_URL || '';
+    fetch(`${BASE_URL}/canvan/${proyectoId}/tareas`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
@@ -184,7 +185,8 @@ function handleDrop(e) {
 }
 
 function actualizarEstadoTarea(tareaId, estadoId) {
-    fetch(`/tareas/${tareaId}/actualizar-estado`, {
+    const BASE_URL = window.BASE_URL || '';
+    fetch(`${BASE_URL}/tareas/${tareaId}/actualizar-estado`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
