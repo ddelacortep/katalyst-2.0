@@ -1,0 +1,62 @@
+
+name: Despliegue a Producción
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout del código
+        uses: actions/checkout@v4
+      
+      - name: Despliegue FTP a Producción
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: ./
+          server-dir: /katalyst.ddelacortep.tech/htdocs/
+          dangerous-clean-slate: false
+          exclude: |
+            **/.git*
+            **/.github*
+            **/node_modules/**
+            **/.env*
+            **/vendor/**
+            **/storage/logs/**
+            **/storage/framework/cache/**
+            **/storage/framework/sessions/**
+            **/composer.lock
+            **/package-lock.json
+      
+      - name: Crear archivo marcador para limpieza de caché
+        run: touch storage/cache-reset.flag
+      
+      - name: Subir archivo marcador vía FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: ./storage/
+          server-dir: /portfolio.ddelacortep.tech/htdocs/storage/
+          dangerous-clean-slate: false
+      
+      - name: Esperar a que los archivos se sincronicen
+        run: sleep 2
+      
+      - name: Ejecutar limpieza de caché - Método 1 (HTTP PHP)
+        run: |
+          echo "🔄 Intentando limpiar caché vía HTTP..."
+          curl -s "https://portfolio.ddelacortep.tech/clear-cache.php?token=${{ secrets.CLEAR_CACHE_TOKEN }}" || echo "⚠️  Script PHP no disponible"
+      
+      - name: Ejecutar limpieza de caché - Método 2 (Acceso a la app)
+        run: |
+          echo "🔄 La próxima visita a la web limpiará el caché automáticamente..."
+          echo "✅ Deploy completado exitosamente"
