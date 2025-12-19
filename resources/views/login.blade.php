@@ -36,13 +36,12 @@
                             <x-botones text="ENTER" type="submit" color="#191919" size="md" height="small"
                             border_color="bg-[#191919]">
                             </x-botones>
-                        </div>
-
                         <a href="{{ route('register') }}">
-                        <x-botones text="REGISTRATE" type="button" color="#191919" size="md" height="small"
-                            border_color="bg-[#191919]" class="absolute bottom-4 left-1/2 transform -translate-x-1/2">
-                        </x-botones>
-                    </a>
+                            <x-botones text="REGISTRATE" type="button" color="#191919" size="md" height="small"
+                                border_color="bg-[#191919]" class="absolute bottom-4 left-1/2 transform -translate-x-1/2">
+                            </x-botones>
+                        </a>
+                        </div>
                     </form>
                 </div>
             </div>
