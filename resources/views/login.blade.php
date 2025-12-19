@@ -32,7 +32,7 @@
 
 
                         <!-- BOTÓN ENTER -->
-                        <div class="pt-4 flex justify-center">
+                        <div class="pt-4 flex flex-col items-center gap-2">
                             <x-botones text="ENTER" type="submit" color="#191919" size="md" height="small"
                             border_color="bg-[#191919]">
                             </x-botones>
