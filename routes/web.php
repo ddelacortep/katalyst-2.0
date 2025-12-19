@@ -51,6 +51,10 @@ Route::middleware(['auth', 'prevent-back-history'])->group(function () {
     Route::post('/tareas/{id}/actualizar-estado', [TareaController::class, 'actualizarEstado'])
         ->name('tareas.actualizar-estado');
 
+    // Ruta para Google Calendar
+    Route::post('/tasks/{task}/push-to-calendar', [CalendarController::class, 'pushTaskToCalendar'])
+        ->name('tasks.push-to-calendar');
+
 });
 
 Route::get('/', function () {
@@ -82,9 +86,6 @@ Route::post('/register', [RegisterController::class, 'register'])
 
 Route::get('/google/auth', [GoogleAuthController::class, 'redirect'])->name('google.auth');
 Route::get('/google/callback', [GoogleAuthController::class, 'callback'])->name('google.callback');
-
-Route::post('/tasks/{task}/push-to-calendar', [CalendarController::class, 'pushTaskToCalendar'])
-    ->name('tasks.push-to-calendar');
 
 Route::get('tareas', [TareaController::class, 'index'])->name('tareas.index');
 
