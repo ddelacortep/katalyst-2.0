@@ -84,7 +84,13 @@ Route::post('/register', [RegisterController::class, 'register'])
 
 // ---------------------
 
-Route::get('/google/auth', [GoogleAuthController::class, 'redirect'])->name('google.auth');
+// Rutas de Google Calendar (requieren autenticación)
+Route::middleware(['auth'])->group(function () {
+    Route::get('/google/auth', [GoogleAuthController::class, 'redirect'])->name('google.auth');
+    Route::get('/google/disconnect', [GoogleAuthController::class, 'disconnect'])->name('google.disconnect');
+});
+
+// Callback de Google (no requiere auth porque viene de Google)
 Route::get('/google/callback', [GoogleAuthController::class, 'callback'])->name('google.callback');
 
 Route::get('tareas', [TareaController::class, 'index'])->name('tareas.index');

@@ -19,8 +19,49 @@ class Usuario extends Authenticatable
     public $timestamps = false;
     public $incrementing = true;
 
-    protected $fillable = ['id', 'nombre_usuario', 'correo', 'contrasena'];
-    protected $hidden = ['contrasena'];
+    protected $fillable = ['id', 'nombre_usuario', 'correo', 'contrasena', 'google_token', 'google_token_expires_at'];
+    protected $hidden = ['contrasena', 'google_token'];
+
+    /**
+     * Check if user has Google Calendar connected
+     */
+    public function hasGoogleCalendarConnected(): bool
+    {
+        return !empty($this->google_token);
+    }
+
+    /**
+     * Get Google token as array
+     */
+    public function getGoogleTokenArray(): ?array
+    {
+        if (empty($this->google_token)) {
+            return null;
+        }
+        return json_decode($this->google_token, true);
+    }
+
+    /**
+     * Set Google token from array
+     */
+    public function setGoogleToken(array $token): void
+    {
+        $this->google_token = json_encode($token);
+        if (isset($token['expires_in'])) {
+            $this->google_token_expires_at = now()->addSeconds($token['expires_in']);
+        }
+        $this->save();
+    }
+
+    /**
+     * Clear Google token
+     */
+    public function clearGoogleToken(): void
+    {
+        $this->google_token = null;
+        $this->google_token_expires_at = null;
+        $this->save();
+    }
     
 
     public function participa()
